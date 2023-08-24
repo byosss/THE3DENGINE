@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Iinclude
-LIBS = -Llib
+LIBS = -Llib -lglfw3 -lopengl32 -lgdi32
 
 SRC_DIR = src
 OBJ_DIR = bin

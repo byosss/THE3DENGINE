@@ -2,7 +2,7 @@
 
 int fn() {
 
-    std::cout << "world !" << std::endl;
+    std::cout << "Hello world !" << std::endl;
 
     return 0;
 }
