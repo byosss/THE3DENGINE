@@ -1,1 +1,3 @@
 lib/* linguist-vendored
+src/glad.c linguist-vendored
+Makefile linguist-vendored
