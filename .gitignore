@@ -7,5 +7,9 @@
 # Ignorer les fichiers de configuration locaux
 .env
 
+# Ignorer les fichiers de builds
+*.o
+*.exe
+
 # Ignorer les fichiers de sauvegarde
 *~
