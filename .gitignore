@@ -1,0 +1,11 @@
+# Ignorer les fichiers temporaires
+*.tmp
+
+# Ignorer le dossier de vscode
+/.vscode/
+
+# Ignorer les fichiers de configuration locaux
+.env
+
+# Ignorer les fichiers de sauvegarde
+*~
