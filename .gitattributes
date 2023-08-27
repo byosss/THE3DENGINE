@@ -1,2 +1,9 @@
 src/glad.c linguist-vendored
+
 lib/** linguist-vendored
+
+lib/GLFW/* linguist-vendored
+
+lib/glad/* linguist-vendored
+
+lib/KHR/* linguist-vendored
