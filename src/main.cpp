@@ -1,13 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-
 #include <iostream>
 
+#include "TimeManager.h"
 #include "Shader.h"
 #include "Texture.h"
-
-
 
 
 // settings
@@ -27,7 +25,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -49,7 +47,7 @@ int main()
     // ------------------------------------
     Shader Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag");
 
-    Texture Texture("assets/textures/alpha 5.png");
+    Texture Texture("assets/textures/alpha5.png");
 
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -95,24 +93,31 @@ int main()
     glEnableVertexAttribArray(2);  
 
 
+    TimeManager TimeManager(window);
+
+    //glfwSwapInterval(0); // uncomment to disable vsync
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        // update deltaTime and the FPS counter
+        // ------
+        TimeManager.update();
+
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // apply texture to the triangle
         Texture.use();
 
-        // draw a triangle
+        // apply shaders to the triangle
         Shader.use();
 
-        
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        //glBindVertexArray(0); // no need to unbind it every time 
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
