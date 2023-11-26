@@ -1,23 +1,33 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 
 #include "TimeManager.h"
+#include "InputManager.h"
 #include "Shader.h"
-#include "Texture.h"
-
+#include "Camera.h"
+#include "Model.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+GLFWwindow* window;
+
+// Initialize the Camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+
+void keyCallbackExample(int, int, int, int);
+void keyCallbackExitApp(int, int, int, int);
 
 int main()
 {
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -25,7 +35,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -33,110 +43,105 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
+    
 
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+       std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
+    // configure global opengl state
+    // -----------------------------
+    glEnable(GL_DEPTH_TEST);
+
+    // Model
+    Model jack;
+    
     // build and compile our shader program
     // ------------------------------------
-    Shader Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag");
+    Shader shader("assets/shaders/shader.vert", "assets/shaders/shader.frag");
 
-    Texture Texture("assets/textures/alpha5.png");
+    // Initialize the TimeManager
+    // --------------------------
+    TimeManager Time(window);
 
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-        // positions         // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-    };
-    unsigned int indices[] = {  
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-    unsigned int VBO, EBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &EBO);
-    glGenBuffers(1, &VBO);
-    
-    // ..:: Initialization code :: ..
-    // 1. bind Vertex Array Object
-    glBindVertexArray(VAO);
-
-    // 2. copy our vertices array in a vertex buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // 3. copy our index array in a element buffer for OpenGL to use
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // 4. then set the vertex attributes pointers
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);  
+    // Initialize the Input manager
+    // --------------------------
+    InputManager Input(window);
+    Input.setKeyCallback(GLFW_KEY_Q, keyCallbackExample);
+    Input.setKeyCallback(GLFW_KEY_ESCAPE, keyCallbackExitApp);
 
 
-    TimeManager TimeManager(window);
-
-    //glfwSwapInterval(0); // uncomment to disable vsync
+    camera._ready(Time, Input);
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+
         // update deltaTime and the FPS counter
         // ------
-        TimeManager.update();
+        Time.update();
 
-        // render
+        // update poll IO events (keys pressed/released, mouse moved etc.)
+        // ---------------------------------------------------------------
+        Input.pollEvents();
+
+        camera._process(Time, Input);
+
+        // update rendering
         // ------
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // apply texture to the triangle
-        Texture.use();
 
         // apply shaders to the triangle
-        Shader.use();
+        shader.use();
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
- 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
+        // pass projection matrix to shader
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        shader.setMat4("projection", projection);
+
+        // pass camera/view transformation to shader
+        glm::mat4 view = camera.GetViewMatrix();
+        shader.setMat4("view", view);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        shader.setMat4("model", model);
+
+        glBindVertexArray(jack.VAO);
+        glDrawElements(GL_TRIANGLES, jack.sizei, GL_UNSIGNED_INT, 0);
+
+        // swap buffers
+        // ------------
         glfwSwapBuffers(window);
-        glfwPollEvents();
+       
     }
-
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-    //glDeleteProgram(shaderProgram);
-
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
-
-
+    
     return 0;
+}
+
+// Exemple d'utilisation de keyCallback (InputManager)
+void keyCallbackExample(int key, int action, int shiftKeyPressed, int controlKeyPressed) {
+    if (action == GLFW_PRESS) {
+        std::cout << "Touche " << key << " appuyee !" << std::endl;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else if (action == GLFW_RELEASE) {
+        std::cout << "Touche " << key << " relachee !" << std::endl;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
+
+// Autre xemple d'utilisation de keyCallback
+void keyCallbackExitApp(int key, int action, int shiftKeyPressed, int controlKeyPressed) {
+    if (action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, true);
+    }
 }

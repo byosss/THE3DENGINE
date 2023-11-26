@@ -1,15 +1,14 @@
 # OpenGL-Learning
 
-Ce projet utilise "Makefile" pour build et clean
-
-lien d'installation Windows :
-https://gnuwin32.sourceforge.net/packages/make.htm
-(cliquez sur "Setup program")
-
+Ce projet utilise "Makefile" pour build, run et clean
 
 Commandes :
 
->> make all         -> (pour build et créer l'executable du projet)
+>> make all         -> (pour mrproper, build et executer le projet)
+
+>> make run         -> (pour build et executer le projet)
+
+>> make build       -> (pour build le projet)
 
 >> make clean       -> (pour supprimer tous les fichiers .o du projet)
 

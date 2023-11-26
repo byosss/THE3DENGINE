@@ -13,10 +13,13 @@ OBJ_C = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_C))
 
 TARGET = projet
 
+all : mrproper run
 
-all : $(TARGET)
+run : build exe
 
-$(TARGET): $(OBJ_CPP) $(OBJ_C)
+build : $(OBJ_DIR)/$(TARGET)
+
+$(OBJ_DIR)/$(TARGET): $(OBJ_CPP) $(OBJ_C)
 	$(CC) $^ -o $@ $(CFLAGS) $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -30,4 +33,7 @@ clean :
 	del /Q $(OBJ_DIR)\*.o
 
 mrproper : clean
-	del $(TARGET).exe
+	del /Q $(OBJ_DIR)\$(TARGET).exe
+
+exe : $(OBJ_DIR)/$(TARGET)
+	$(OBJ_DIR)/$(TARGET).exe
