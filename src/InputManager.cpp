@@ -12,6 +12,10 @@ InputManager::InputManager(GLFWwindow* window) : window(window) {
 
     glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
+    this->pollEvents();
+
+    glfwGetCursorPos(window, &mousePosition.x, &mousePosition.y);
+
     // Initialisation des tableaux de touches
     for (int i = 0; i < GLFW_KEY_LAST; ++i) {
         keyStates[i] = RELEASED;
@@ -22,8 +26,6 @@ InputManager::InputManager(GLFWwindow* window) : window(window) {
         mouseButtonStates[i] = RELEASED;
         mouseButtonCallbacks[i] = nullptr;
     }
-
-    glfwGetCursorPos(window, &mousePosition.x, &mousePosition.y);
 }
 
 

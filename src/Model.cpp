@@ -3,7 +3,6 @@
 Model::Model() {
 
     this->load_cube();
-
 }
 
 Model::~Model() {
@@ -13,9 +12,16 @@ Model::~Model() {
     glDeleteVertexArrays(1, &this->VAO);
     glDeleteBuffers(1, &this->VBO);
     glDeleteBuffers(1, &this->EBO);
+}
+
+void Model::_ready(TimeManager& Time, InputManager& Input) {
 
 }
 
+void Model::_process(TimeManager& Time, InputManager& Input) {
+    position += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time.getDeltaTime());
+    rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time.getDeltaTime());
+}
 
 void Model::load_house() {
 

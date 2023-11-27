@@ -15,8 +15,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 GLFWwindow* window;
 
-// Initialize the Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 
 
 void keyCallbackExample(int, int, int, int);
@@ -57,9 +56,6 @@ int main()
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
-
-    // Model
-    Model jack;
     
     // build and compile our shader program
     // ------------------------------------
@@ -72,11 +68,17 @@ int main()
     // Initialize the Input manager
     // --------------------------
     InputManager Input(window);
+
     Input.setKeyCallback(GLFW_KEY_Q, keyCallbackExample);
     Input.setKeyCallback(GLFW_KEY_ESCAPE, keyCallbackExitApp);
 
+    // Initialize the Camera
+    Camera camera(glm::vec3(-3.0, 0.0, 0.0));
+    // Initialize the Model
+    Model jack;
 
     camera._ready(Time, Input);
+    jack._ready(Time, Input);
 
     // render loop
     // -----------
@@ -91,7 +93,11 @@ int main()
         // ---------------------------------------------------------------
         Input.pollEvents();
 
+
+        // update objects
+        // ------
         camera._process(Time, Input);
+        jack._process(Time, Input);
 
         // update rendering
         // ------
@@ -110,6 +116,13 @@ int main()
         shader.setMat4("view", view);
 
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, jack.position);
+
+        model = glm::rotate(model, glm::radians(jack.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
+        model = glm::rotate(model, glm::radians(jack.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
+        model = glm::rotate(model, glm::radians(jack.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
+
+        model = glm::scale(model, jack.scale);
         shader.setMat4("model", model);
 
         glBindVertexArray(jack.VAO);

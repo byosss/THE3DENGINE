@@ -2,8 +2,13 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
-class Model
+#include "Object.h"
+#include "TimeManager.h"
+#include "InputManager.h"
+
+class Model : public Object
 {
 public:
     GLuint VAO;
@@ -11,6 +16,9 @@ public:
 
     Model();
     ~Model();
+
+    void _ready(TimeManager&, InputManager&) override;
+    void _process(TimeManager&, InputManager&) override;
 
 private:
     GLuint VBO, EBO;
