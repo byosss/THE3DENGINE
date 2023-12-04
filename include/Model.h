@@ -1,27 +1,27 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Object.h"
-#include "TimeManager.h"
-#include "InputManager.h"
+
 
 class Model : public Object
 {
 public:
-    GLuint VAO;
-    unsigned int sizei;
-
     Model();
     ~Model();
 
-    void _ready(TimeManager&, InputManager&) override;
-    void _process(TimeManager&, InputManager&) override;
+    void _ready(TimeManager*, InputManager*) override;
+    void _process(TimeManager*, InputManager*) override;
+    void render(Shader*) override;
+
+    GLuint getVAO();
+    unsigned int getSizei();
 
 private:
-    GLuint VBO, EBO;
+    GLuint VAO, VBO, EBO;
+
+    unsigned int sizei;
 
     void load_house();
     void load_cube();

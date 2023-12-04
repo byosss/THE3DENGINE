@@ -1,12 +1,9 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Object.h"
-#include "TimeManager.h"
-#include "InputManager.h"
+
 
 // Default camera values
 const float YAW         =  0.0f;  // regarde droit sur l'axe verticale
@@ -33,8 +30,9 @@ public:
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix();
 
-    void _ready(TimeManager&, InputManager&) override;
-    void _process(TimeManager&, InputManager&) override;
+    void _ready(TimeManager*, InputManager*) override;
+    void _process(TimeManager*, InputManager*) override;
+    void render(Shader*) override;
 
 private:
 
@@ -47,7 +45,7 @@ private:
     glm::dvec2 mouseLastPos;
 
     // processes input received from a keyboard input system.
-    void ProcessKeyboardInput(double deltaTime, InputManager&);
+    void ProcessKeyboardInput(double deltaTime, InputManager*);
     // processes input received from a mouse input system.
     void ProcessMouseMovement(glm::dvec2 mousePosition, GLboolean constrainPitch = true);
 

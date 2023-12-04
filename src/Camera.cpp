@@ -40,19 +40,19 @@ Camera::Camera(float posX, float posY, float posZ, float yaw, float pitch)
 }
 
 // method called once at start
-void Camera::_ready(TimeManager& Time, InputManager& Input)
+void Camera::_ready(TimeManager* Time, InputManager* Input)
 {
-    this->mouseLastPos = Input.getMousePosition();
+    this->mouseLastPos = Input->getMousePosition();
 }
 
 // method called each frame
-void Camera::_process(TimeManager& Time, InputManager& Input)
+void Camera::_process(TimeManager* Time, InputManager* Input)
 {
-    this->ProcessKeyboardInput(Time.getDeltaTime(), Input);
+    this->ProcessKeyboardInput(Time->getDeltaTime(), Input);
 
-    this->ProcessMouseMovement(Input.getMousePosition());
+    this->ProcessMouseMovement(Input->getMousePosition());
 
-    this->mouseLastPos = Input.getMousePosition();
+    this->mouseLastPos = Input->getMousePosition();
 
     /*
     std::cout << "---------------------------" << std::endl;
@@ -64,22 +64,26 @@ void Camera::_process(TimeManager& Time, InputManager& Input)
     */
 }
 
+void Camera::render(Shader*)
+{
+}
+
 // processes input received from a keyboard input system.
-void Camera::ProcessKeyboardInput(double deltaTime, InputManager& Input)
+void Camera::ProcessKeyboardInput(double deltaTime, InputManager* Input)
 {
     float velocity = MovementSpeed * deltaTime;
-    if (Input.isKeyRepeated(GLFW_KEY_W))
+    if (Input->isKeyRepeated(GLFW_KEY_W))
         position += Front * velocity;
-    if (Input.isKeyRepeated(GLFW_KEY_S))
+    if (Input->isKeyRepeated(GLFW_KEY_S))
         position -= Front * velocity;
-    if (Input.isKeyRepeated(GLFW_KEY_A))
+    if (Input->isKeyRepeated(GLFW_KEY_A))
         position -= Right * velocity;
-    if (Input.isKeyRepeated(GLFW_KEY_D))
+    if (Input->isKeyRepeated(GLFW_KEY_D))
         position += Right * velocity;
     
-    if (Input.isKeyRepeated(GLFW_KEY_LEFT_SHIFT))
+    if (Input->isKeyRepeated(GLFW_KEY_LEFT_SHIFT))
         position += WorldUp * velocity;
-    if (Input.isKeyRepeated(GLFW_KEY_LEFT_CONTROL))
+    if (Input->isKeyRepeated(GLFW_KEY_LEFT_CONTROL))
         position -= WorldUp * velocity;
 }
 

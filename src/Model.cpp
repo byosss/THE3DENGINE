@@ -1,12 +1,12 @@
 #include "Model.h"
 
-Model::Model() {
-
+Model::Model() 
+{
     this->load_cube();
 }
 
-Model::~Model() {
-
+Model::~Model() 
+{
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &this->VAO);
@@ -14,17 +14,37 @@ Model::~Model() {
     glDeleteBuffers(1, &this->EBO);
 }
 
-void Model::_ready(TimeManager& Time, InputManager& Input) {
 
+void Model::_ready(TimeManager* Time, InputManager* Input) 
+{
 }
 
-void Model::_process(TimeManager& Time, InputManager& Input) {
-    position += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time.getDeltaTime());
-    rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time.getDeltaTime());
+void Model::_process(TimeManager* Time, InputManager* Input) 
+{
+    position += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
+    rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
 }
 
-void Model::load_house() {
+void Model::render(Shader* shader) 
+{
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, this->position);
 
+    model = glm::rotate(model, glm::radians(this->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
+    model = glm::rotate(model, glm::radians(this->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
+    model = glm::rotate(model, glm::radians(this->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
+
+    model = glm::scale(model, this->scale);
+    shader->setMat4("model", model);
+
+    glBindVertexArray(this->getVAO());
+
+    glDrawElements(GL_TRIANGLES, this->getSizei(), GL_UNSIGNED_INT, 0);
+}
+
+
+void Model::load_house() 
+{
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     GLfloat vertices[] = {
@@ -69,8 +89,8 @@ void Model::load_house() {
     this->sizei = 9;
 }
 
-void Model::load_cube() {
-
+void Model::load_cube() 
+{
     //vertex data --- position and color
     //vertex position data has been duplicated to ensure constant color across each face
     GLfloat vertices[] = {
@@ -134,4 +154,15 @@ void Model::load_cube() {
 
 
     this->sizei = 36;
+}
+
+
+GLuint Model::getVAO() 
+{
+    return this->VAO;
+}
+
+unsigned int  Model::getSizei() 
+{
+    return this->sizei;
 }
