@@ -129,7 +129,7 @@ void Model::load_cube()
         19, 18, 22, 19, 22, 23 // front plane triangles
     };
 
-        // ..:: Initialization code :: ..
+    // ..:: Initialization code ::..
     // 1. bind Vertex Array Object
     glGenVertexArrays(1, &this->VAO);
     glBindVertexArray(this->VAO);

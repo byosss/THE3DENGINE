@@ -14,7 +14,7 @@ Camera::Camera(glm::vec3 position, float yaw, float pitch)
 
     this->MovementSpeed    = SPEED;
     this->MouseSensitivity = SENSITIVITY;
-    this->Zoom             = ZOOM;
+    this->fov              = FOV;
 
     updateCameraVectors();
 }
@@ -34,7 +34,7 @@ Camera::Camera(float posX, float posY, float posZ, float yaw, float pitch)
 
     this->MovementSpeed    = SPEED;
     this->MouseSensitivity = SENSITIVITY;
-    this->Zoom             = ZOOM;
+    this->fov              = FOV;
 
     updateCameraVectors();
 }
@@ -90,7 +90,7 @@ void Camera::ProcessKeyboardInput(double deltaTime, InputManager* Input)
 // processes input received from a mouse input system.
 void Camera::ProcessMouseMovement(glm::dvec2 mousePosition, GLboolean constrainPitch)
 {
-    this->rotation.y   += (mousePosition.x - mouseLastPos.x) * MouseSensitivity;
+    this->rotation.y += (mousePosition.x - mouseLastPos.x) * MouseSensitivity;
     this->rotation.x += (mouseLastPos.y - mousePosition.y) * MouseSensitivity; // reversed since y-coordinates go from bottom to top
 
     // make sure that when pitch is out of bounds, screen doesn't get flipped

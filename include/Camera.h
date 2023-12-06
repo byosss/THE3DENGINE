@@ -10,7 +10,7 @@ const float YAW         =  0.0f;  // regarde droit sur l'axe verticale
 const float PITCH       =  0.0f;  // regarde droit sur l'axe horizontale
 const float SPEED       =  2.5f;
 const float SENSITIVITY =  0.1f;
-const float ZOOM        =  45.0f; // field of view ? ( fov )
+const float FOV        =  45.0f; // field of view ? ( fov )
 
 // An abstract camera class
 class Camera : public Object
@@ -20,7 +20,7 @@ public:
     // camera options
     float MovementSpeed;
     float MouseSensitivity;
-    float Zoom;
+    float fov;
 
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
