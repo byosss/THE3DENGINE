@@ -3,14 +3,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Object.h"
-#include "Camera.h"
-#include "Model.h"
+#include "Objects/Object.h"
+#include "Objects/Camera.h"
+#include "Objects/Model.h"
 
-
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-GLFWwindow* window;
 
 class Engine 
 {

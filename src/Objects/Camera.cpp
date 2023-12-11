@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Objects/Camera.h"
 
 // constructor with vectors
 Camera::Camera(glm::vec3 position, float yaw, float pitch)

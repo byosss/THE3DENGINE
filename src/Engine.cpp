@@ -1,5 +1,9 @@
 #include "Engine.h"
 
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+GLFWwindow* window;
+
 
 void keyCallbackExample(int, int, int, int);
 void keyCallbackExitApp(int, int, int, int);

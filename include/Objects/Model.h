@@ -2,7 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Object.h"
+#include "Objects/Object.h"
 
 
 class Model : public Object
