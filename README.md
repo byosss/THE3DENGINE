@@ -1,15 +1,19 @@
 # OpenGL-Learning
 
-Ce projet utilise "Makefile" pour build, run et clean
+This project is currently designed for educational purposes (for me) to learn graphics programming. It is not intended for production use but rather for learning and personal development.
 
-Commandes :
+## Prerequisites
 
->> make all         -> (pour mrproper, build et executer le projet)
+- C++ 64-bit compiler
+- CMake (for project build)
+- OpenGL Library (version 3.3)
+- Operating System: Windows/Linux/macOS
 
->> make run         -> (pour build et executer le projet)
+## Project Structure
 
->> make build       -> (pour build le projet)
-
->> make clean       -> (pour supprimer tous les fichiers .o du projet)
-
->> make mrproper    -> (pour supprimer tous les fichiers .o et le .exe du projet)
+- `src/`: Contains source files.
+- `include/`: Header files.
+- `lib/`: External libraries used by the project.
+- `vendor/`: Third-party dependencies or external integrated libraries.
+- `assets/`: Project resources (shaders, textures, etc.).
+- `build/`: Directory generated during project build.
