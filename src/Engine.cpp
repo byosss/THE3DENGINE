@@ -58,7 +58,7 @@ void Engine::innit()
 
     // build and compile our shader program
     // ------------------------------------
-    shader = new Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag");  
+    shader = new Shader("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");  
 
 
     // configure global opengl state
