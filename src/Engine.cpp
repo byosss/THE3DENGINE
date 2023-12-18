@@ -7,6 +7,7 @@ GLFWwindow* window;
 
 void keyCallbackExample(int, int, int, int);
 void keyCallbackExitApp(int, int, int, int);
+void framebuffer_size_callback(GLFWwindow*, int, int);
 
 
 Engine::Engine() 
@@ -71,13 +72,15 @@ void Engine::innit()
     Input->setKeyCallback(GLFW_KEY_Q, keyCallbackExample);
     Input->setKeyCallback(GLFW_KEY_ESCAPE, keyCallbackExitApp);
 
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
     // Load Scene
     // Initialize the Camera
     Camera* camera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
     this->setActiveCamera(camera);
 
     // Initialize the Model
-    Model* jack = new Model;
+    Model3D* jack = new Model3D;
 
     objects.push_back(camera);
     objects.push_back(jack);
@@ -95,7 +98,7 @@ void Engine::run()
     {
 
         // update deltaTime and the FPS counter
-        // ------
+        // ------------------------------------
         Time->update();
 
         // update poll IO events (keys pressed/released, mouse moved etc.)
@@ -103,11 +106,11 @@ void Engine::run()
         Input->pollEvents();
 
         // update objects
-        // ------
+        // --------------
         update();
 
-        // update rendering
-        // ------
+        // draw objects
+        // ------------
         draw();
 
         // swap buffers
@@ -193,4 +196,11 @@ void keyCallbackExitApp(int key, int action, int shiftKeyPressed, int controlKey
     if (action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }

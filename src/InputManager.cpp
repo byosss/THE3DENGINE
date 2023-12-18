@@ -8,7 +8,6 @@ InputManager::InputManager(GLFWwindow* window) : window(window) {
     glfwSetKeyCallback(this->window, keyCallbackDispatcher);
     glfwSetMouseButtonCallback(this->window, mouseButtonCallbackDispatcher);
     glfwSetCursorPosCallback(this->window, cursorPositionCallbackDispatcher);
-    glfwSetFramebufferSizeCallback(this->window, framebuffer_size_callback);
 
     glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
@@ -107,11 +106,4 @@ glm::dvec2 InputManager::getMousePosition() {
 
 void InputManager::pollEvents() {
     glfwPollEvents();
-}
-
-void InputManager::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
 }

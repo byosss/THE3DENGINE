@@ -5,11 +5,11 @@
 #include "Objects/Object.h"
 
 
-class Model : public Object
+class Model3D : public Object
 {
 public:
-    Model();
-    ~Model();
+    Model3D();
+    ~Model3D();
 
     void _ready(TimeManager*, InputManager*) override;
     void _process(TimeManager*, InputManager*) override;
@@ -23,6 +23,5 @@ private:
 
     unsigned int sizei;
 
-    void load_house();
     void load_cube();
 };

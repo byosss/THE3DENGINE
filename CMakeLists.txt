@@ -1,5 +1,5 @@
 # Set the minimum CMake version required
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.10)
 
 # Project Name: "Aurora"
 project("Aurora" LANGUAGES C CXX)
@@ -13,7 +13,8 @@ set(SOURCES
     src/Shader.cpp
     src/Objects/Object.cpp
     src/Objects/Camera.cpp
-    src/Objects/Model.cpp
+    src/Objects/Model3D.cpp
+    src/Objects/Light.cpp
     vendor/glad/glad.c
 )
 
