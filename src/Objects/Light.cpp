@@ -11,6 +11,7 @@ Light::Light() {
 // method called once at start
 void Light::_ready(TimeManager* Time, InputManager* Input)
 {
+    this->position = glm::vec3(0.0, 4.0, 0.0);
 }
 
 // method called each frame
@@ -18,6 +19,6 @@ void Light::_process(TimeManager* Time, InputManager* Input)
 {
 }
 
-void Light::render(Shader*)
+void Light::render()
 {
 }

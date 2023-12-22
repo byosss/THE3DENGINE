@@ -6,7 +6,6 @@
 
 #include "TimeManager.h"
 #include "InputManager.h"
-#include "Shader.h"
 
 
 class Object {
@@ -26,7 +25,7 @@ public:
     // method called each frame
     virtual void _process(TimeManager*, InputManager*) = 0;
     // method called each frame
-    virtual void render(Shader*) = 0;
+    virtual void render() = 0;
 
 protected:
 

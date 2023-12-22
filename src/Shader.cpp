@@ -1,7 +1,43 @@
 #include "Shader.h"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+Shader::Shader() 
+{
+    // Default Shader files
+    const char* vertexPath = "../assets/shaders/light/shader.vert";
+    const char* fragmentPath = "../assets/shaders/light/shader.frag";
 
+    loadShader(vertexPath, fragmentPath);
+}
+
+Shader::Shader(const char* vertexPath, const char* fragmentPath) 
+{
+    loadShader(vertexPath, fragmentPath);
+}
+
+
+void Shader::use() 
+{
+    glUseProgram(ID);
+}
+
+void Shader::setBool(const std::string &name, bool value) const 
+{
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value); 
+}
+
+void Shader::setVec3(const std::string &name, const glm::vec3 &vec) const
+{ 
+    glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &vec[0]); 
+}
+
+void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+
+
+void Shader::loadShader(const char* vertexPath, const char* fragmentPath)
+{
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
@@ -78,24 +114,4 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
-
-}
-
-void Shader::use() {
-
-    glUseProgram(ID);
-
-}
-
-
-
-void Shader::setBool(const std::string &name, bool value) const {
-
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value); 
-
-}
-
-void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
-{
-    glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

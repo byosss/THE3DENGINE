@@ -6,6 +6,7 @@
 #include "Objects/Object.h"
 #include "Objects/Camera.h"
 #include "Objects/Model3D.h"
+#include "Objects/Light.h"
 
 class Engine 
 {

@@ -3,6 +3,8 @@
 Model3D::Model3D() 
 {
     this->load_cube();
+
+    this->shader = Shader();  // set the default shaders configured
 }
 
 Model3D::~Model3D() 
@@ -25,17 +27,25 @@ void Model3D::_process(TimeManager* Time, InputManager* Input)
     rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
 }
 
-void Model3D::render(Shader* shader) 
+void Model3D::render() 
 {
-    glm::mat4 model = glm::mat4(1.0f);
+    Shader::modelMatrix = glm::mat4(1.0f);
 
-    model = glm::translate(model, this->position);
-    model = glm::rotate(model, glm::radians(this->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
-    model = glm::rotate(model, glm::radians(this->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
-    model = glm::rotate(model, glm::radians(this->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
-    model = glm::scale(model, this->scale);
+    Shader::modelMatrix = glm::translate(Shader::modelMatrix, this->position);
+    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
+    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
+    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
+    Shader::modelMatrix = glm::scale(Shader::modelMatrix, this->scale);
     
-    shader->setMat4("model", model);
+    shader.use();
+
+    shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); 
+    shader.setVec3("lightPos", glm::vec3(0.0, 4.0, 0.0));
+    shader.setVec3("viewPos", glm::vec3(-3.0, 0.0, 0.0));
+
+    shader.setMat4("projection", Shader::projectionMatrix);
+    shader.setMat4("view", Shader::viewMatrix);
+    shader.setMat4("model", Shader::modelMatrix);
 
     glBindVertexArray(this->getVAO()); // Liaison du VAO
 
@@ -126,4 +136,10 @@ GLuint Model3D::getVAO()
 unsigned int  Model3D::getSizei() 
 {
     return this->sizei;
+}
+
+
+void Model3D::setShader(const char* vertexPath, const char* fragmentPath)
+{
+    this->shader = Shader(vertexPath, fragmentPath);
 }

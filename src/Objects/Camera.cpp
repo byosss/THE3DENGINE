@@ -64,7 +64,7 @@ void Camera::_process(TimeManager* Time, InputManager* Input)
     */
 }
 
-void Camera::render(Shader*)
+void Camera::render()
 {
 }
 
