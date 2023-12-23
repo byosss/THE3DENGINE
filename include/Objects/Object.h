@@ -7,18 +7,13 @@
 #include "TimeManager.h"
 #include "InputManager.h"
 
+#include <vector>
 
 class Object {
 public:
 
-    // Attributs communs à toutes les sous-classes
-    glm::vec3 position;  // ( x, y, z)
-    glm::vec3 rotation;  // ( Pitch, Yaw, Roll )
-    glm::vec3 scale;     // ( x, y, z)
-
-    // Constructeur / Destructeur
-    Object();
-    virtual ~Object() {}
+    // Enfants de l'objet
+    std::vector<Object*> children;
 
     // method called once at start
     virtual void _ready(TimeManager*, InputManager*) = 0;
@@ -27,6 +22,5 @@ public:
     // method called each frame
     virtual void render() = 0;
 
-protected:
-
+    void addChild(Object* child);
 };

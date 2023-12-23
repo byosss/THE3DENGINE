@@ -2,7 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Objects/Object.h"
+#include "Objects/Node.h"
 
 
 // Default camera values
@@ -13,7 +13,7 @@ const float SENSITIVITY =  0.1f;
 const float FOV        =  45.0f; // field of view ? ( fov )
 
 // An abstract camera class
-class Camera : public Object
+class Camera : public Node
 {
 public:
 

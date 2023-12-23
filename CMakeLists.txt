@@ -10,8 +10,10 @@ set(SOURCES
     src/Engine.cpp
     src/InputManager.cpp
     src/TimeManager.cpp
+    src/Scene.cpp
     src/Shader.cpp
     src/Objects/Object.cpp
+    src/Objects/Node.cpp
     src/Objects/Camera.cpp
     src/Objects/Model3D.cpp
     src/Objects/Light.cpp

@@ -3,7 +3,10 @@
 #include <iostream>
 #include <vector>
 
+#include "Scene.h"
+
 #include "Objects/Object.h"
+#include "Objects/Node.h"
 #include "Objects/Camera.h"
 #include "Objects/Model3D.h"
 #include "Objects/Light.h"
@@ -18,8 +21,6 @@ public:
 
     std::vector<Object*> objects;
 
-    Engine();
-
     void innit();
     void run();
     void terminate();
@@ -33,6 +34,4 @@ private:
 
     void update();
     void draw();
-
 };
-

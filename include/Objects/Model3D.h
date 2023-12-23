@@ -2,11 +2,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Objects/Object.h"
+#include "Objects/Node.h"
 #include "Shader.h"
 
 
-class Model3D : public Object
+class Model3D : public Node
 {
 public:
     Model3D();

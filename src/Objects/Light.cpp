@@ -1,11 +1,7 @@
 #include "Objects/Light.h"
 
 Light::Light() {
-    this->position = glm::vec3(0.0, 0.0, 0.0);
-    this->rotation = glm::vec3(0.0, 0.0, 0.0);
-    this->scale    = glm::vec3(1.0, 1.0, 1.0);
-
-    this->color    = glm::vec3(1.0, 1.0, 1.0);
+    this->color = glm::vec3(1.0, 1.0, 1.0);
 }
 
 // method called once at start

@@ -1,9 +1,9 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "Objects/Object.h"
+#include "Objects/Node.h"
 
-class Light : public Object
+class Light : public Node
 {
 public:
     glm::vec3 color;

@@ -10,10 +10,6 @@ void keyCallbackExitApp(int, int, int, int);
 void framebuffer_size_callback(GLFWwindow*, int, int);
 
 
-Engine::Engine() 
-{
-}
-
 void Engine::innit() 
 {
     // glfw: initialize and configure
@@ -93,6 +89,15 @@ void Engine::innit()
     objects.push_back(jack);
     objects.push_back(pointLight);
     objects.push_back(lightCube);
+
+    Node* worldNode = new Node;
+    worldNode->addChild(camera);
+    worldNode->addChild(jack);
+    worldNode->addChild(pointLight);
+    worldNode->addChild(lightCube);
+
+    char sceneName[] = "Scene_Main";
+    Scene mainScene(sceneName, worldNode);
 }
 
 void Engine::run() 

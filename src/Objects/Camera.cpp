@@ -19,7 +19,6 @@ Camera::Camera(glm::vec3 position, float yaw, float pitch)
     updateCameraVectors();
 }
 
-
 // constructor with scalar values
 Camera::Camera(float posX, float posY, float posZ, float yaw, float pitch)
 {
@@ -38,6 +37,7 @@ Camera::Camera(float posX, float posY, float posZ, float yaw, float pitch)
 
     updateCameraVectors();
 }
+
 
 // method called once at start
 void Camera::_ready(TimeManager* Time, InputManager* Input)
