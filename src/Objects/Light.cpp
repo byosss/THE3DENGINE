@@ -14,7 +14,3 @@ void Light::_ready(TimeManager* Time, InputManager* Input)
 void Light::_process(TimeManager* Time, InputManager* Input)
 {
 }
-
-void Light::render()
-{
-}

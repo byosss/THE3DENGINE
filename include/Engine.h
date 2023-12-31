@@ -18,20 +18,14 @@ public:
 
     TimeManager* Time;
     InputManager* Input;
-    Shader* shader;
 
-    std::vector<Object*> objects;
+    Scene* mainMap;
 
     void innit();
     void run();
     void terminate();
 
-    void setActiveCamera(Camera*);
-    Camera* getActiveCamera();
-
 private:
-
-    Camera* activeCamera;
 
     void update();
     void draw();

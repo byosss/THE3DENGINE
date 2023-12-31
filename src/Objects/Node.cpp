@@ -12,6 +12,3 @@ void Node::_ready(TimeManager* Time, InputManager* Input)
 
 void Node::_process(TimeManager* Time, InputManager* Input) 
 { }
-
-void Node::render() 
-{ }

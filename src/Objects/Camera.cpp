@@ -16,7 +16,13 @@ Camera::Camera(glm::vec3 position, float yaw, float pitch)
     this->MouseSensitivity = SENSITIVITY;
     this->fov              = FOV;
 
+    this->SCR_WIDTH = 800;
+    this->SCR_HEIGHT = 600;
+
     updateCameraVectors();
+
+    updateViewMatrix();
+    updateProjMatrix();
 }
 
 // constructor with scalar values
@@ -35,7 +41,13 @@ Camera::Camera(float posX, float posY, float posZ, float yaw, float pitch)
     this->MouseSensitivity = SENSITIVITY;
     this->fov              = FOV;
 
+    this->SCR_WIDTH = 800;
+    this->SCR_HEIGHT = 600;
+
     updateCameraVectors();
+
+    updateViewMatrix();
+    updateProjMatrix();
 }
 
 
@@ -53,19 +65,6 @@ void Camera::_process(TimeManager* Time, InputManager* Input)
     this->ProcessMouseMovement(Input->getMousePosition());
 
     this->mouseLastPos = Input->getMousePosition();
-
-    /*
-    std::cout << "---------------------------" << std::endl;
-    std::cout << "Front : x_" << Front.x << " y_" << Front.y << " z_" << Front.z << std::endl;
-    std::cout << "Up : x_" << Up.x << " y_" << Up.y << " z_" << Up.z << std::endl;
-    std::cout << "Right : x_" << Right.x << " y_" << Right.y << " z_" << Right.z << std::endl;
-    std::cout << "Yaw : " << Yaw << std::endl;
-    std::cout << "Pitch : " << Pitch << std::endl;
-    */
-}
-
-void Camera::render()
-{
 }
 
 // processes input received from a keyboard input system.
@@ -104,6 +103,9 @@ void Camera::ProcessMouseMovement(glm::dvec2 mousePosition, GLboolean constrainP
 
     // update Front, Right and Up Vectors using the updated Euler angles
     updateCameraVectors();
+
+    // view matrix calculated using Euler Angles and the LookAt Matrix
+    updateViewMatrix();
 }
 
 
@@ -121,8 +123,38 @@ void Camera::updateCameraVectors()
     Up    = glm::normalize(glm::cross(Right, Front));
 }
 
-// returns the view matrix calculated using Euler Angles and the LookAt Matrix
-glm::mat4 Camera::GetViewMatrix()
+
+glm::mat4 Camera::getViewMatrix()
 {
-    return glm::lookAt(position, position + Front, Up);
+    return this->viewMatrix;
+}
+
+glm::mat4 Camera::getProjMatrix()
+{
+    return this->projMatrix;
+}
+
+void Camera::updateViewMatrix()
+{
+    this->viewMatrix = glm::lookAt(position, position + Front, Up);
+}
+
+void Camera::updateProjMatrix()
+{
+    this->projMatrix = glm::perspective(glm::radians(this->fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+}
+
+void Camera::setViewport(unsigned int width, unsigned int height)
+{
+    this->SCR_WIDTH = width;
+    this->SCR_HEIGHT = height;
+
+    this->updateProjMatrix();
+}
+
+void Camera::setFOV(float FOV)
+{
+    this->fov = FOV;
+
+    this->updateProjMatrix();
 }

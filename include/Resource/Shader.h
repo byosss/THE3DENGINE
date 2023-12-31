@@ -15,10 +15,6 @@ class Shader
 public:
     // the program ID
     unsigned int ID;
-
-    static inline glm::mat4 projectionMatrix;
-    static inline glm::mat4 viewMatrix;
-    static inline glm::mat4 modelMatrix;
   
     // constructor reads and builds the shader
     Shader();

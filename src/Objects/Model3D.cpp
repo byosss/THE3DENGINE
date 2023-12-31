@@ -27,32 +27,6 @@ void Model3D::_process(TimeManager* Time, InputManager* Input)
     rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
 }
 
-void Model3D::render() 
-{
-    Shader::modelMatrix = glm::mat4(1.0f);
-
-    Shader::modelMatrix = glm::translate(Shader::modelMatrix, this->position);
-    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
-    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
-    Shader::modelMatrix = glm::rotate(Shader::modelMatrix, glm::radians(this->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
-    Shader::modelMatrix = glm::scale(Shader::modelMatrix, this->scale);
-    
-    shader.use();
-
-    shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); 
-    shader.setVec3("lightPos", glm::vec3(0.0, 4.0, 0.0));
-    shader.setVec3("viewPos", glm::vec3(-3.0, 0.0, 0.0));
-
-    shader.setMat4("projection", Shader::projectionMatrix);
-    shader.setMat4("view", Shader::viewMatrix);
-    shader.setMat4("model", Shader::modelMatrix);
-
-    glBindVertexArray(this->getVAO()); // Liaison du VAO
-
-    glDrawElements(GL_TRIANGLES, this->getSizei(), GL_UNSIGNED_INT, 0);
-
-    glBindVertexArray(0); // Déliaison du VAO après avoir fini de dessiner
-}
 
 
 void Model3D::load_cube() 
@@ -133,7 +107,7 @@ GLuint Model3D::getVAO()
     return this->VAO;
 }
 
-unsigned int  Model3D::getSizei() 
+unsigned int Model3D::getSizei() 
 {
     return this->sizei;
 }
@@ -142,4 +116,9 @@ unsigned int  Model3D::getSizei()
 void Model3D::setShader(const char* vertexPath, const char* fragmentPath)
 {
     this->shader = Shader(vertexPath, fragmentPath);
+}
+
+Shader Model3D::getShader()
+{
+    return this->shader;
 }

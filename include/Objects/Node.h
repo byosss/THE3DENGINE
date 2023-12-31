@@ -16,7 +16,6 @@ public:
 
     void _ready(TimeManager*, InputManager*) override;
     void _process(TimeManager*, InputManager*) override;
-    void render() override;
 };
 
 #endif

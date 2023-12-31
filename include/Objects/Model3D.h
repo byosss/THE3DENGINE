@@ -15,12 +15,12 @@ public:
 
     void _ready(TimeManager*, InputManager*) override;
     void _process(TimeManager*, InputManager*) override;
-    void render() override;
 
     GLuint getVAO();
     unsigned int getSizei();
 
     void setShader(const char*, const char*);
+    Shader getShader();
 
 private:
     GLuint VAO, VBO, EBO;

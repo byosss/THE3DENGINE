@@ -21,7 +21,7 @@ void Engine::innit()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
     // glfw window creation
@@ -36,7 +36,6 @@ void Engine::innit()
     glfwMakeContextCurrent(window);
     glfwSwapInterval(0);
     
-
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -58,7 +57,6 @@ void Engine::innit()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    
     // setting the key callback
     // -----------------------------
     Input->setKeyCallback(GLFW_KEY_Q, keyCallbackExample);
@@ -67,46 +65,33 @@ void Engine::innit()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // Load Scene
-    // Initialize the Camera
+    Node* worldNode = new Node;
     Camera* camera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
-    this->setActiveCamera(camera);
-
-    // Initialize the Model
     Model3D* jack = new Model3D;
-
     Light* pointLight = new Light;
     Model3D* lightCube = new Model3D;
+
     lightCube->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
     lightCube->position = glm::vec3(0.0, 2.0, 0.0);
     lightCube->scale = glm::vec3(0.2, 0.2, 0.2);
 
-
-    objects.push_back(camera);
-    objects.push_back(jack);
-    objects.push_back(pointLight);
-    objects.push_back(lightCube);
-
-    Node* worldNode = new Node;
-    worldNode->addChild(camera);
-    worldNode->addChild(jack);
-    worldNode->addChild(pointLight);
-    worldNode->addChild(lightCube);
-
-    char sceneName[] = "Scene_Main";
-    Scene mainScene(sceneName, worldNode);
+    this->mainMap = new Scene("Scene_Main", worldNode);
+    this->mainMap->addChild(worldNode, camera);
+    this->mainMap->addChild(worldNode, jack);
+    this->mainMap->addChild(worldNode, pointLight);
+    this->mainMap->addChild(worldNode, lightCube);
+    this->mainMap->setActiveCamera(camera);
 }
 
 void Engine::run() 
 {
-    for (Object* object : objects) {
-        object->_ready(Time, Input);
-    }
+    // Call the _ready() method of all objects in the scene
+    mainMap->_readyObjects(Time, Input);
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-
         // update deltaTime and the FPS counter
         // ------------------------------------
         Time->update();
@@ -122,24 +107,18 @@ void Engine::run()
         // draw objects
         // ------------
         draw();
-
-        // swap buffers
-        // ------------
-        glfwSwapBuffers(window);
-       
     }
 }
 
 void Engine::terminate() 
 {
     // Nettoyage de la mémoire
-    for (Object* object : objects) {
-        delete object; // Libération de la mémoire allouée
-    }
+    // for (Object* object : objects) {
+    //     delete object; // Libération de la mémoire allouée
+    // }
 
     delete Time;
     delete Input;
-    delete shader;
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -150,10 +129,8 @@ void Engine::terminate()
 
 void Engine::update() {
 
-    // Utilisation des objets via la classe de base
-    for (Object* object : objects) {
-        object->_process(Time, Input);
-    }
+    // Call the _process() method of all objects in the scene
+    mainMap->_processObjects(Time, Input);
 
 }
 
@@ -162,33 +139,40 @@ void Engine::draw() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // TODO : mettre les 2 matrices en attribut dans la camera active
-    Shader::projectionMatrix = glm::perspective(glm::radians(getActiveCamera()->fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    Shader::viewMatrix = getActiveCamera()->GetViewMatrix();
+    glm::mat4 modelMatrix;
 
-    for (Object* object : objects) {
-        object->render();
+    for (Model3D* model3D : mainMap->Models3D) {
+
+        modelMatrix = glm::mat4(1.0f);
+
+        modelMatrix = glm::translate(modelMatrix, model3D->position);
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(model3D->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotation autour de l'axe X (Pitch)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(model3D->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y (Yaw)
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(model3D->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
+        modelMatrix = glm::scale(modelMatrix, model3D->scale);
+        
+        model3D->getShader().use();
+
+        model3D->getShader().setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); 
+        model3D->getShader().setVec3("lightPos", glm::vec3(0.0, 4.0, 0.0));
+        model3D->getShader().setVec3("viewPos", glm::vec3(-3.0, 0.0, 0.0));
+
+        model3D->getShader().setMat4("projection", mainMap->getActiveCamera()->getProjMatrix());
+        model3D->getShader().setMat4("view", mainMap->getActiveCamera()->getViewMatrix());
+        model3D->getShader().setMat4("model", modelMatrix);
+
+        glBindVertexArray(model3D->getVAO()); // Liaison du VAO
+
+        glDrawElements(GL_TRIANGLES, model3D->getSizei(), GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0); // Déliaison du VAO après avoir fini de dessiner
     }
 
-    // ha mieux ?
-    /*
-    for (Object* object : objects) {
-        object->render(getActiveCamera(), lights[]);
-    }
-    */
+    // swap buffers
+    // ------------
+    glfwSwapBuffers(window);
 }
 
-
-
-void Engine::setActiveCamera(Camera* camera)
-{
-    this->activeCamera = camera;
-}
-
-Camera* Engine::getActiveCamera()
-{
-    return this->activeCamera;
-}
 
 
 // Exemple d'utilisation de keyCallbacks (InputManager)

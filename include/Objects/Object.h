@@ -20,10 +20,7 @@ public:
     virtual void _ready(TimeManager*, InputManager*) = 0;
     // method called each frame
     virtual void _process(TimeManager*, InputManager*) = 0;
-    // method called each frame
-    virtual void render() = 0;
 
-    void addChild(Object* child);
 };
 
 #endif
