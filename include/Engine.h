@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include <iostream>
 #include <vector>
@@ -35,3 +36,5 @@ private:
     void update();
     void draw();
 };
+
+#endif

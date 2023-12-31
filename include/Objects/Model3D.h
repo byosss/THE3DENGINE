@@ -1,9 +1,10 @@
-#pragma once
+#ifndef MODEL3D_H
+#define MODEL3D_H
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Objects/Node.h"
-#include "Shader.h"
+#include "Resource/Shader.h"
 
 
 class Model3D : public Node
@@ -30,3 +31,5 @@ private:
 
     void load_cube();
 };
+
+#endif

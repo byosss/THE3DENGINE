@@ -34,6 +34,7 @@ void Engine::innit()
         return ;
     }
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
     
 
 
@@ -52,11 +53,6 @@ void Engine::innit()
     // Initialize the Input manager
     // --------------------------
     Input = new InputManager(window);
-
-    // build and compile our shader program
-    // ------------------------------------
-    //shader = new Shader("../assets/shaders/shader.vert", "../assets/shaders/shader.frag");
-
 
     // configure global opengl state
     // -----------------------------
@@ -156,7 +152,7 @@ void Engine::update() {
 
     // Utilisation des objets via la classe de base
     for (Object* object : objects) {
-        object->_process(Time, Input); // Appel polymorphique à la méthode dessiner()
+        object->_process(Time, Input);
     }
 
 }
@@ -166,23 +162,20 @@ void Engine::draw() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    // TODO : mettre les 2 matrices en attribut dans la camera active
     Shader::projectionMatrix = glm::perspective(glm::radians(getActiveCamera()->fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
     Shader::viewMatrix = getActiveCamera()->GetViewMatrix();
-
-    /*
-    Model3D haaa = objects[1];
-    lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-    lightingShader.setVec3("lightPos", lightPos);
-    lightingShader.setVec3("viewPos", camera.Position);
-    */
-
 
     for (Object* object : objects) {
         object->render();
     }
+
+    // ha mieux ?
+    /*
+    for (Object* object : objects) {
+        object->render(getActiveCamera(), lights[]);
+    }
+    */
 }
 
 

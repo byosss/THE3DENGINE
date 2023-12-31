@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECT_H
+#define OBJECT_H
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -24,3 +25,5 @@ public:
 
     void addChild(Object* child);
 };
+
+#endif

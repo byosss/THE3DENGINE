@@ -8,10 +8,18 @@ project("Aurora" LANGUAGES C CXX)
 set(SOURCES
     src/main.cpp
     src/Engine.cpp
+    src/Renderer.cpp
     src/InputManager.cpp
     src/TimeManager.cpp
+    src/ResourceManager.cpp
     src/Scene.cpp
-    src/Shader.cpp
+
+    src/Resource/Resource.cpp
+    src/Resource/Shader.cpp
+    src/Resource/Texture.cpp
+    src/Resource/Vertex.cpp
+    src/Resource/Material.cpp
+
     src/Objects/Object.cpp
     src/Objects/Node.cpp
     src/Objects/Camera.cpp
@@ -19,6 +27,9 @@ set(SOURCES
     src/Objects/Light.cpp
     vendor/glad/glad.c
 )
+
+# Define source files
+# file(GLOB_RECURSE SOURCES "src/*.c")
 
 # Define include directories
 set(INCLUDES 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -60,3 +61,5 @@ public:
 
     glm::dvec2 getMousePosition();
 };
+
+#endif

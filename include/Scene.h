@@ -9,6 +9,11 @@ private:
     char name[50];
     Object *rootObject;
 
+    // Mesh vecteur<Mesh> = meshs
+    // Particle vecteur<Particle> = particles
+
+    // Light vecteur<Light> = lights
+
 public:
     Scene(char sceneName[], char filePath[]);
     Scene(char sceneName[], Object *object);

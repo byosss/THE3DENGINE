@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TIMEMANAGER_H
+#define TIMEMANAGER_H
 
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -24,3 +25,5 @@ public:
 
     double getDeltaTime();
 };
+
+#endif
