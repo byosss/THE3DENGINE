@@ -69,17 +69,28 @@ void Engine::innit()
     Camera* camera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
     Model3D* jack = new Model3D;
     Light* pointLight = new Light;
+    Light* pointLight2 = new Light;
     Model3D* lightCube = new Model3D;
 
+    jack->load_cube2();
+        
+    lightCube->load_cube();
     lightCube->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
-    lightCube->position = glm::vec3(0.0, 2.0, 0.0);
+    lightCube->position = glm::vec3(0.0, 1.5, 0.0);
     lightCube->scale = glm::vec3(0.2, 0.2, 0.2);
+
+    pointLight->position = glm::vec3(0.0, 1.5, 0.0);
+    // pointLight->color = glm::vec3(0.0, 1.0, 0.0);
+
+    pointLight2->position = glm::vec3(0.0, -1.5, 0.0);
+    pointLight2->color = glm::vec3(1.0, 1.0, 0.0);
 
     this->mainMap = new Scene("Scene_Main", worldNode);
     this->mainMap->addChild(worldNode, camera);
     this->mainMap->addChild(worldNode, jack);
     this->mainMap->addChild(worldNode, pointLight);
     this->mainMap->addChild(worldNode, lightCube);
+    this->mainMap->addChild(worldNode, pointLight2);
     this->mainMap->setActiveCamera(camera);
 }
 
@@ -141,8 +152,8 @@ void Engine::draw() {
 
     glm::mat4 modelMatrix;
 
-    for (Model3D* model3D : mainMap->Models3D) {
-
+    for (Model3D* model3D : mainMap->Models3D) 
+    {
         modelMatrix = glm::mat4(1.0f);
 
         modelMatrix = glm::translate(modelMatrix, model3D->position);
@@ -153,9 +164,37 @@ void Engine::draw() {
         
         model3D->getShader().use();
 
-        model3D->getShader().setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f)); 
-        model3D->getShader().setVec3("lightPos", glm::vec3(0.0, 4.0, 0.0));
-        model3D->getShader().setVec3("viewPos", glm::vec3(-3.0, 0.0, 0.0));
+        model3D->getShader().setInt("numPointLights", mainMap->numLights);
+
+
+        for (size_t i = 0; i < mainMap->Lights.size(); ++i) 
+        {
+            std::string indexString = std::to_string(i);
+
+            model3D->getShader().setVec3("pointLights["+ indexString +"].position", mainMap->Lights[i]->position);
+            model3D->getShader().setVec3("pointLights["+ indexString +"].color", mainMap->Lights[i]->color);
+
+            model3D->getShader().setVec3("pointLights["+ indexString +"].ambient", mainMap->Lights[i]->ambient); 
+            model3D->getShader().setVec3("pointLights["+ indexString +"].diffuse", mainMap->Lights[i]->diffuse); 
+            model3D->getShader().setVec3("pointLights["+ indexString +"].specular", mainMap->Lights[i]->specular);
+
+            model3D->getShader().setFloat("pointLights["+ indexString +"].constant", mainMap->Lights[i]->constant); 
+            model3D->getShader().setFloat("pointLights["+ indexString +"].linear", mainMap->Lights[i]->linear); 
+            model3D->getShader().setFloat("pointLights["+ indexString +"].quadratic", mainMap->Lights[i]->quadratic); 
+        }
+
+        model3D->getShader().setInt("material.diffuse", 0);
+        model3D->getShader().setInt("material.specular", 1);
+        model3D->getShader().setFloat("material.shininess", 32.0f);
+
+        // bind diffuse map
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, model3D->diffuse.ID);
+        // bind specular map
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, model3D->specular.ID);
+        
+        model3D->getShader().setVec3("viewPos", mainMap->getActiveCamera()->position);
 
         model3D->getShader().setMat4("projection", mainMap->getActiveCamera()->getProjMatrix());
         model3D->getShader().setMat4("view", mainMap->getActiveCamera()->getViewMatrix());
@@ -163,8 +202,13 @@ void Engine::draw() {
 
         glBindVertexArray(model3D->getVAO()); // Liaison du VAO
 
-        glDrawElements(GL_TRIANGLES, model3D->getSizei(), GL_UNSIGNED_INT, 0);
-
+        if (model3D->EBO == 0) {
+            glDrawArrays(GL_TRIANGLES, 0, model3D->getSizei());
+        }
+        else {
+            glDrawElements(GL_TRIANGLES, model3D->getSizei(), GL_UNSIGNED_INT, 0);
+        }
+        
         glBindVertexArray(0); // Déliaison du VAO après avoir fini de dessiner
     }
 

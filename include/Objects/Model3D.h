@@ -5,11 +5,16 @@
 
 #include "Objects/Node.h"
 #include "Resource/Shader.h"
+#include "Resource/Texture.h"
 
 
 class Model3D : public Node
 {
 public:
+    GLuint VAO, VBO, EBO;
+
+    Texture diffuse, specular;
+
     Model3D();
     ~Model3D();
 
@@ -22,14 +27,13 @@ public:
     void setShader(const char*, const char*);
     Shader getShader();
 
-private:
-    GLuint VAO, VBO, EBO;
+    void load_cube();
+    void load_cube2();
 
+private:
     unsigned int sizei;
 
     Shader shader;
-
-    void load_cube();
 };
 
 #endif

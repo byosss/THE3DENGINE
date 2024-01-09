@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "Scene.h"

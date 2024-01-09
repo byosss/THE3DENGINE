@@ -12,6 +12,9 @@ Scene::Scene(const char sceneName[], const char filePath[])
     }
     this->name[i] = '\0';
 
+    this->numMeshs = 0;
+    this->numLights = 0;
+
     loadScene(filePath);
 }
 
@@ -24,6 +27,9 @@ Scene::Scene(const char sceneName[], Object *rootObject)
         i++;
     }
     this->name[i] = '\0';
+
+    this->numMeshs = 0;
+    this->numLights = 0;
 
     loadScene(rootObject);
 }
@@ -46,9 +52,11 @@ void Scene::addChild(Object* parent, Object* child) {
 
         if (dynamic_cast<Model3D*>(child) != nullptr) {
             Models3D.push_back(dynamic_cast<Model3D*>(child));
+            this->numMeshs++;
         } 
         else if (dynamic_cast<Light*>(child) != nullptr) {
             Lights.push_back(dynamic_cast<Light*>(child));
+            this->numLights++;
         }
     }
 }

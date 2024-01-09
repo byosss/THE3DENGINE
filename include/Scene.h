@@ -21,6 +21,9 @@ public:
     std::vector<Model3D*> Models3D;
     std::vector<Light*> Lights;
 
+    int numMeshs;
+    int numLights;
+
     Scene(const char sceneName[], const char filePath[]);
     Scene(const char sceneName[], Object *object);
 
