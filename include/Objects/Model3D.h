@@ -29,6 +29,7 @@ public:
 
     void load_cube();
     void load_cube2();
+    void load_coloredCube(float, float, float);
 
 private:
     unsigned int sizei;

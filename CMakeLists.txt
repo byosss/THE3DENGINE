@@ -25,6 +25,9 @@ set(SOURCES
     src/Objects/Camera.cpp
     src/Objects/Model3D.cpp
     src/Objects/Light.cpp
+    src/Objects/DirectionalLight.cpp
+    src/Objects/SpotLight.cpp
+
     vendor/glad/glad.c
 )
 

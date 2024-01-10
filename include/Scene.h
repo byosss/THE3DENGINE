@@ -5,6 +5,8 @@
 #include "Objects/Camera.h"
 #include "Objects/Model3D.h"
 #include "Objects/Light.h"
+#include "Objects/DirectionalLight.h"
+#include "Objects/SpotLight.h"
 
 class Scene
 {
@@ -20,9 +22,8 @@ public:
     
     std::vector<Model3D*> Models3D;
     std::vector<Light*> Lights;
-
-    int numMeshs;
-    int numLights;
+    std::vector<DirectionalLight*> dirLights;
+    std::vector<SpotLight*> spotLights;
 
     Scene(const char sceneName[], const char filePath[]);
     Scene(const char sceneName[], Object *object);

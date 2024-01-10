@@ -12,6 +12,8 @@
 #include "Objects/Camera.h"
 #include "Objects/Model3D.h"
 #include "Objects/Light.h"
+#include "Objects/DirectionalLight.h"
+#include "Objects/SpotLight.h"
 
 class Engine 
 {

@@ -1,12 +1,13 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef SPOTLIGHT_H
+#define SPOTLIGHT_H
 
 #include "Objects/Node.h"
 
-class Light : public Node
+class SpotLight : public Node
 {
 public:
     glm::vec3 color;
+    glm::vec3 direction;
 
     glm::vec3 ambient;
     glm::vec3 diffuse;
@@ -16,7 +17,10 @@ public:
     float linear;
     float quadratic;
 
-    Light();
+    float cutOff;
+    float outerCutOff;
+
+    SpotLight();
     
     void _ready(TimeManager*, InputManager*) override;
     void _process(TimeManager*, InputManager*) override;

@@ -1,22 +1,19 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef DIRECTIONALLIGHT_H
+#define DIRECTIONALLIGHT_H
 
 #include "Objects/Node.h"
 
-class Light : public Node
+class DirectionalLight : public Node
 {
 public:
     glm::vec3 color;
+    glm::vec3 direction;
 
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;
 
-    float constant;
-    float linear;
-    float quadratic;
-
-    Light();
+    DirectionalLight();
     
     void _ready(TimeManager*, InputManager*) override;
     void _process(TimeManager*, InputManager*) override;
