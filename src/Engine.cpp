@@ -72,6 +72,11 @@ void Engine::innit()
     Model3D* jack = new Model3D;
     jack->load_cube2();
 
+    Model3D* lilJack = new Model3D;
+    lilJack->load_cube();
+    lilJack->position = glm::vec3(1.25, 0.0, 0.0);
+    lilJack->scale = glm::vec3(0.3, 0.3, 0.3);
+
     Light* pointLight = new Light;
     pointLight->position = glm::vec3(0.0, 1.5, 0.0);
     pointLight->color = glm::vec3(1.0, 1.0, 1.0);
@@ -79,7 +84,7 @@ void Engine::innit()
     Model3D* lightCube = new Model3D;
     lightCube->load_coloredCube(1.0, 1.0, 1.0);
     lightCube->position = glm::vec3(0.0, 1.5, 0.0);
-    lightCube->scale = glm::vec3(0.2, 0.2, 0.2);
+    lightCube->scale = glm::vec3(0.1, 0.1, 0.1);
 
     Light* pointLight2 = new Light;
     pointLight2->position = glm::vec3(0.0, -1.5, 0.0);
@@ -88,17 +93,17 @@ void Engine::innit()
     Model3D* lightCube2 = new Model3D;
     lightCube2->load_coloredCube(1.0, 1.0, 0.0);
     lightCube2->position = glm::vec3(0.0, -1.5, 0.0);
-    lightCube2->scale = glm::vec3(0.2, 0.2, 0.2);
+    lightCube2->scale = glm::vec3(0.1, 0.1, 0.1);
 
     // DirectionalLight* sun = new DirectionalLight;
     // sun->color = glm::vec3(1.0, 0.0, 1.0);
 
     // SpotLight* spotLight = new SpotLight;
 
-
     this->mainMap = new Scene("Scene_Main", worldNode);
     this->mainMap->addChild(worldNode, camera);
     this->mainMap->addChild(worldNode, jack);
+    this->mainMap->addChild(worldNode, lilJack);
     this->mainMap->addChild(worldNode, pointLight);
     this->mainMap->addChild(worldNode, lightCube);
     this->mainMap->addChild(worldNode, pointLight2);
@@ -159,6 +164,15 @@ void Engine::update() {
 
     mainMap->Models3D[0]->position += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
     mainMap->Models3D[0]->rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
+
+    glm::vec3 jPos = mainMap->Models3D[0]->position;
+    glm::vec3 lilJPos = mainMap->Models3D[1]->position;
+
+    float newX = jPos.x + cos(Time->getDeltaTime()) * (lilJPos.x - jPos.x) - sin(Time->getDeltaTime()) * (lilJPos.z - jPos.z);
+    float newZ = jPos.z + sin(Time->getDeltaTime()) * (lilJPos.x - jPos.x) + cos(Time->getDeltaTime()) * (lilJPos.z - jPos.z);
+
+    mainMap->Models3D[1]->position = glm::vec3(newX, jPos.y, newZ);
+    //mainMap->Models3D[1]->rotation += glm::vec3(25.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
 
 }
 
