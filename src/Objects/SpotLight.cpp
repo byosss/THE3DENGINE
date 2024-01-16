@@ -16,13 +16,3 @@ SpotLight::SpotLight()
     this->cutOff      = glm::cos(glm::radians(12.5f));
     this->outerCutOff = glm::cos(glm::radians(15.0f));
 }
-
-// method called once at start
-void SpotLight::_ready(TimeManager* Time, InputManager* Input)
-{
-}
-
-// method called each frame
-void SpotLight::_process(TimeManager* Time, InputManager* Input)
-{
-}

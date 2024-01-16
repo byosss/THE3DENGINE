@@ -17,9 +17,6 @@ public:
     float quadratic;
 
     Light();
-    
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
 };
 
 #endif

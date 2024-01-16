@@ -21,9 +21,6 @@ public:
     float outerCutOff;
 
     SpotLight();
-    
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
 };
 
 #endif

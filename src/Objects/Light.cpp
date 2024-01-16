@@ -12,13 +12,3 @@ Light::Light()
     this->linear    = 0.09f;
     this->quadratic = 0.032f;
 }
-
-// method called once at start
-void Light::_ready(TimeManager* Time, InputManager* Input)
-{
-}
-
-// method called each frame
-void Light::_process(TimeManager* Time, InputManager* Input)
-{
-}

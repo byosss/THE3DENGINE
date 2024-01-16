@@ -35,8 +35,8 @@ public:
     void setViewport(unsigned int width, unsigned int height);
     void setFOV(float);
 
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
+    void _ready(TimeManager*, InputManager*);
+    void _process(TimeManager*, InputManager*);
 
 private:
 

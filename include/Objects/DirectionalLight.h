@@ -14,9 +14,6 @@ public:
     glm::vec3 specular;
 
     DirectionalLight();
-    
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
 };
 
 #endif

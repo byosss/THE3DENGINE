@@ -1,9 +1,16 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include "Objects/Object.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
-class Node : public Object
+#include "TimeManager.h"
+#include "InputManager.h"
+
+#include <vector>
+
+class Node
 {
 public:
 
@@ -13,9 +20,6 @@ public:
     glm::vec3 scale;     // ( x, y, z)
 
     Node();
-
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
 };
 
 #endif

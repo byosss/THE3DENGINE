@@ -5,9 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "Scene.h"
-
-#include "Objects/Object.h"
 #include "Objects/Node.h"
 #include "Objects/Camera.h"
 #include "Objects/Model3D.h"
@@ -22,7 +19,13 @@ public:
     TimeManager* Time;
     InputManager* Input;
 
-    Scene* mainMap;
+    Camera* activeCamera;
+    Shader* activeShader;
+
+    std::vector<Model3D*> Models3D;
+    std::vector<Light*> Lights;
+    std::vector<DirectionalLight*> dirLights;
+    std::vector<SpotLight*> spotLights;
 
     void innit();
     void run();
@@ -30,6 +33,7 @@ public:
 
 private:
 
+    void loadScene();
     void update();
     void draw();
 };

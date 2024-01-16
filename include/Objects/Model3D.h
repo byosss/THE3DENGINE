@@ -5,36 +5,30 @@
 
 #include "Objects/Node.h"
 #include "Resource/Shader.h"
-#include "Resource/Texture.h"
-
+#include "Resource/Mesh.h"
 
 class Model3D : public Node
 {
 public:
-    GLuint VAO, VBO, EBO;
-
-    Texture diffuse, specular;
-
-    Model3D();
     ~Model3D();
 
-    void _ready(TimeManager*, InputManager*) override;
-    void _process(TimeManager*, InputManager*) override;
+    void LoadModel(std::string fileName);
+    void LoadModel(std::string fileName, std::string basePath);
 
-    GLuint getVAO();
-    unsigned int getSizei();
-
-    void setShader(const char*, const char*);
-    Shader getShader();
-
-    void load_cube();
-    void load_cube2();
-    void load_coloredCube(float, float, float);
+    void Draw(Shader shaderProgram);    
 
 private:
-    unsigned int sizei;
+    std::vector<Mesh> meshes;
+    std::vector<Texture> loadedTextures;
 
-    Shader shader;
+    // Does the parsing of the .obj file and fills in the data structure
+    void ReadOBJ(std::string fileName, std::string basePath);
+
+    // Retrieves a texture associated with the object - by its name and type
+    Texture LoadTexture(std::string path, std::string type);
+
+    // Reads the pixel data from an image file and loads it into the video memory
+    GLuint readTextureFromFile(char const * path);
 };
 
 #endif

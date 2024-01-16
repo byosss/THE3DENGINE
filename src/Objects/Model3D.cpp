@@ -1,276 +1,232 @@
 #include "Objects/Model3D.h"
 
-Model3D::Model3D() 
-{
-    //this->load_cube();
-    this->diffuse = Texture();
-    this->specular = Texture();
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
 
-    this->shader = Shader();  // set the default shaders configured
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
+void Model3D::LoadModel(std::string fileName) {
+
+    std::string basePath = fileName.substr(0, fileName.find_last_of('/')) + "/";
+    ReadOBJ(fileName, basePath);
 }
 
-Model3D::~Model3D() 
-{
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &this->VAO);
-    glDeleteBuffers(1, &this->VBO);
-    glDeleteBuffers(1, &this->EBO);
-}
+void Model3D::LoadModel(std::string fileName, std::string basePath)	{
 
-
-void Model3D::_ready(TimeManager* Time, InputManager* Input) 
-{
-}
-
-void Model3D::_process(TimeManager* Time, InputManager* Input) 
-{
+    ReadOBJ(fileName, basePath);
 }
 
 
+void Model3D::Draw(Shader shaderProgram) {
 
-void Model3D::load_cube() 
-{
-    this->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
-
-    //vertex data --- position and color
-    //vertex position data has been duplicated to ensure constant color across each face
-    GLfloat vertices[] = {
-
-        // positions          // colors           // normals
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, -1.0,  0.0,   //  0
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,   0.0f, -1.0,  0.0,   //  1
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   0.0f, -1.0,  0.0,   //  2
-        -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,   0.0f, -1.0,  0.0,   //  3
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f,  0.0, -1.0,   //  4
-         0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f,  0.0, -1.0,   //  5
-         0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   1.0f,  0.0,  0.0,   //  6
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  -1.0f,  0.0,  0.0,   //  7
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f,  0.0, -1.0,   //  8
-         0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f,  0.0, -1.0,   //  9
-         0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   1.0f,  0.0,  0.0,   // 10
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  -1.0f,  0.0,  0.0,   // 11
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  -1.0f,  0.0,  0.0,   // 12
-         0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,   1.0f,  0.0,  0.0,   // 13
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,   0.0f,  1.0,  0.0,   // 14
-        -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,   0.0f,  1.0,  0.0,   // 15
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  -1.0f,  0.0,  0.0,   // 16
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,   1.0f,  0.0,  0.0,   // 17
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f,  0.0,  1.0,   // 18
-        -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f,  0.0,  1.0,   // 19
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f,  1.0,  0.0,   // 20
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,   0.0f,  1.0,  0.0,   // 21
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f,  0.0,  1.0,   // 22
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,   0.0f,  0.0,  1.0,   // 23
-    };
-
-    GLuint indices[] = {
-        0, 1, 2, 0, 2, 3, // bottom plane triangles
-        8, 9, 5, 8, 5, 4, // back plane triangles
-        17, 10, 6, 17, 6, 13, // right plane triangles
-        16, 12, 7, 16, 7, 11, // left plane triangles
-        20, 21, 14, 20, 14, 15, // top plane triangles
-        19, 18, 22, 19, 22, 23 // front plane triangles
-    };
-
-    // ..:: Initialization code ::..
-    // 1. bind Vertex Array Object
-    glGenVertexArrays(1, &this->VAO);
-    glBindVertexArray(this->VAO);
-
-    // 2. vertices array in VBO
-    glGenBuffers(1, &this->VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // 3. index array in EBO
-    glGenBuffers(1, &this->EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3* sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // normal attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6* sizeof(float)));
-    glEnableVertexAttribArray(2);
-    
-
-    this->sizei = 36;
+    for (int i = 0; i < meshes.size(); i++)
+        meshes[i].Draw(shaderProgram);
 }
 
-void Model3D::load_cube2()
-{
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    GLfloat vertices[] = {
-        // positions          // normals           // texture coords
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+void Model3D::ReadOBJ(std::string fileName, std::string basePath) {
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+    std::cout << "Loading : " << fileName << std::endl;
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    int materialId;
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+    std::string err;
+    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, fileName.c_str(), basePath.c_str(), GL_TRUE);
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+    if (!err.empty()) {
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+        // `err` may contain warning message.
+        std::cerr << err << std::endl;
+    }
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
-    };
+    if (!ret) {
 
-    // ..:: Initialization code ::..
-    // 1. bind Vertex Array Object
-    glGenVertexArrays(1, &this->VAO);
-    glBindVertexArray(this->VAO);
+        exit(1);
+    }
 
-    // 2. vertices array in VBO
-    glGenBuffers(1, &this->VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    std::cout << "# of shapes    : " << shapes.size() << std::endl;
+    std::cout << "# of materials : " << materials.size() << std::endl;
 
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));
-    glEnableVertexAttribArray(2);
+    // Loop over shapes
+    for (size_t s = 0; s < shapes.size(); s++) {
 
-    this->EBO = 0;
+        std::vector<Vertex> vertices;
+        std::vector<GLuint> indices;
+        std::vector<Texture> textures;
 
-    this->diffuse = Texture("../assets/textures/container.png");
-    this->specular = Texture("../assets/textures/container_specular.png");
+        // Loop over faces(polygon)
+        size_t index_offset = 0;
+        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
 
-    this->sizei = 36;
+            int fv = shapes[s].mesh.num_face_vertices[f];
+
+            //gps::Texture currentTexture = LoadTexture("index1.png", "ambientTexture");
+            //textures.push_back(currentTexture);
+
+            // Loop over vertices in the face.
+            for (size_t v = 0; v < fv; v++) {
+
+                // access to vertex
+                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+
+                float vx = attrib.vertices[3 * idx.vertex_index + 0];
+                float vy = attrib.vertices[3 * idx.vertex_index + 1];
+                float vz = attrib.vertices[3 * idx.vertex_index + 2];
+                float nx = attrib.normals[3 * idx.normal_index + 0];
+                float ny = attrib.normals[3 * idx.normal_index + 1];
+                float nz = attrib.normals[3 * idx.normal_index + 2];
+                float tx = 0.0f;
+                float ty = 0.0f;
+
+                if (idx.texcoord_index != -1) {
+
+                    tx = attrib.texcoords[2 * idx.texcoord_index + 0];
+                    ty = attrib.texcoords[2 * idx.texcoord_index + 1];
+                }
+
+                glm::vec3 vertexPosition(vx, vy, vz);
+                glm::vec3 vertexNormal(nx, ny, nz);
+                glm::vec2 vertexTexCoords(tx, ty);
+
+                Vertex currentVertex;
+                currentVertex.Position = vertexPosition;
+                currentVertex.Normal = vertexNormal;
+                currentVertex.TexCoords = vertexTexCoords;
+
+                vertices.push_back(currentVertex);
+
+                indices.push_back((GLuint)(index_offset + v));
+            }
+
+            index_offset += fv;
+        }
+
+        // get material id
+        // Only try to read materials if the .mtl file is present
+        size_t a = shapes[s].mesh.material_ids.size();
+
+        if (a > 0 && materials.size()>0) {
+
+            materialId = shapes[s].mesh.material_ids[0];
+            if (materialId != -1) {
+
+                Material currentMaterial;
+                currentMaterial.ambient = glm::vec3(materials[materialId].ambient[0], materials[materialId].ambient[1], materials[materialId].ambient[2]);
+                currentMaterial.diffuse = glm::vec3(materials[materialId].diffuse[0], materials[materialId].diffuse[1], materials[materialId].diffuse[2]);
+                currentMaterial.specular = glm::vec3(materials[materialId].specular[0], materials[materialId].specular[1], materials[materialId].specular[2]);
+
+                //ambient texture
+                std::string ambientTexturePath = materials[materialId].ambient_texname;
+
+                if (!ambientTexturePath.empty()) {
+
+                    Texture currentTexture;
+                    currentTexture = LoadTexture(basePath + ambientTexturePath, "ambientTexture");
+                    textures.push_back(currentTexture);
+                }
+
+                //diffuse texture
+                std::string diffuseTexturePath = materials[materialId].diffuse_texname;
+
+                if (!diffuseTexturePath.empty()) {
+
+                    Texture currentTexture;
+                    currentTexture = LoadTexture(basePath + diffuseTexturePath, "diffuseTexture");
+                    textures.push_back(currentTexture);
+                }
+
+                //specular texture
+                std::string specularTexturePath = materials[materialId].specular_texname;
+
+                if (!specularTexturePath.empty()) {
+
+                    Texture currentTexture;
+                    currentTexture = LoadTexture(basePath + specularTexturePath, "specularTexture");
+                    textures.push_back(currentTexture);
+                }
+            }
+        }
+
+        meshes.push_back(Mesh(vertices, indices, textures));
+    }
 }
 
-void Model3D::load_coloredCube(float r, float g, float b) 
-{
-    this->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
+Texture Model3D::LoadTexture(std::string path, std::string type) {
 
-    //vertex data --- position and color
-    //vertex position data has been duplicated to ensure constant color across each face
-    GLfloat vertices[] = {
+    for (int i = 0; i < loadedTextures.size(); i++) {
 
-        // positions          // colors    // normals
-        -0.5f, -0.5f, -0.5f,  r, g, b,   0.0f, -1.0,  0.0,   //  0
-         0.5f, -0.5f, -0.5f,  r, g, b,   0.0f, -1.0,  0.0,   //  1
-         0.5f, -0.5f,  0.5f,  r, g, b,   0.0f, -1.0,  0.0,   //  2
-        -0.5f, -0.5f,  0.5f,  r, g, b,   0.0f, -1.0,  0.0,   //  3
-        -0.5f,  0.5f, -0.5f,  r, g, b,   0.0f,  0.0, -1.0,   //  4
-         0.5f,  0.5f, -0.5f,  r, g, b,   0.0f,  0.0, -1.0,   //  5
-         0.5f,  0.5f,  0.5f,  r, g, b,   1.0f,  0.0,  0.0,   //  6
-        -0.5f,  0.5f,  0.5f,  r, g, b,  -1.0f,  0.0,  0.0,   //  7
-        -0.5f, -0.5f, -0.5f,  r, g, b,   0.0f,  0.0, -1.0,   //  8
-         0.5f, -0.5f, -0.5f,  r, g, b,   0.0f,  0.0, -1.0,   //  9
-         0.5f, -0.5f,  0.5f,  r, g, b,   1.0f,  0.0,  0.0,   // 10
-        -0.5f, -0.5f,  0.5f,  r, g, b,  -1.0f,  0.0,  0.0,   // 11
-        -0.5f,  0.5f, -0.5f,  r, g, b,  -1.0f,  0.0,  0.0,   // 12
-         0.5f,  0.5f, -0.5f,  r, g, b,   1.0f,  0.0,  0.0,   // 13
-         0.5f,  0.5f,  0.5f,  r, g, b,   0.0f,  1.0,  0.0,   // 14
-        -0.5f,  0.5f,  0.5f,  r, g, b,   0.0f,  1.0,  0.0,   // 15
-        -0.5f, -0.5f, -0.5f,  r, g, b,  -1.0f,  0.0,  0.0,   // 16
-         0.5f, -0.5f, -0.5f,  r, g, b,   1.0f,  0.0,  0.0,   // 17
-         0.5f, -0.5f,  0.5f,  r, g, b,   0.0f,  0.0,  1.0,   // 18
-        -0.5f, -0.5f,  0.5f,  r, g, b,   0.0f,  0.0,  1.0,   // 19
-        -0.5f,  0.5f, -0.5f,  r, g, b,   0.0f,  1.0,  0.0,   // 20
-         0.5f,  0.5f, -0.5f,  r, g, b,   0.0f,  1.0,  0.0,   // 21
-         0.5f,  0.5f,  0.5f,  r, g, b,   0.0f,  0.0,  1.0,   // 22
-        -0.5f,  0.5f,  0.5f,  r, g, b,   0.0f,  0.0,  1.0,   // 23
-    };
+        if (loadedTextures[i].path == path)	{
 
-    GLuint indices[] = {
-        0, 1, 2, 0, 2, 3, // bottom plane triangles
-        8, 9, 5, 8, 5, 4, // back plane triangles
-        17, 10, 6, 17, 6, 13, // right plane triangles
-        16, 12, 7, 16, 7, 11, // left plane triangles
-        20, 21, 14, 20, 14, 15, // top plane triangles
-        19, 18, 22, 19, 22, 23 // front plane triangles
-    };
+            //already loaded texture
+            return loadedTextures[i];
+        }
+    }
 
-    // ..:: Initialization code ::..
-    // 1. bind Vertex Array Object
-    glGenVertexArrays(1, &this->VAO);
-    glBindVertexArray(this->VAO);
+    Texture currentTexture;
+    currentTexture.id = readTextureFromFile(path.c_str());
+    currentTexture.type = std::string(type);
+    currentTexture.path = path;
 
-    // 2. vertices array in VBO
-    glGenBuffers(1, &this->VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    loadedTextures.push_back(currentTexture);
 
-    // 3. index array in EBO
-    glGenBuffers(1, &this->EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3* sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // normal attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6* sizeof(float)));
-    glEnableVertexAttribArray(2);
-    
-
-    this->sizei = 36;
+    return currentTexture;
 }
 
-GLuint Model3D::getVAO() 
+GLuint Model3D::readTextureFromFile(char const * path)
 {
-    return this->VAO;
-}
+    GLuint textureID;
+    glGenTextures(1, &textureID);
 
-unsigned int Model3D::getSizei() 
-{
-    return this->sizei;
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
+    }
+
+    return textureID;
 }
 
 
-void Model3D::setShader(const char* vertexPath, const char* fragmentPath)
-{
-    this->shader = Shader(vertexPath, fragmentPath);
-}
+Model3D::~Model3D() {
 
-Shader Model3D::getShader()
-{
-    return this->shader;
+    for (size_t i = 0; i < loadedTextures.size(); i++) {
+
+        glDeleteTextures(1, &loadedTextures.at(i).id);
+    }
+
+    for (size_t i = 0; i < meshes.size(); i++) {
+
+        GLuint VBO = meshes.at(i).VBO;
+        GLuint EBO = meshes.at(i).EBO;
+        GLuint VAO = meshes.at(i).VAO;
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &EBO);
+        glDeleteVertexArrays(1, &VAO);
+    }
 }

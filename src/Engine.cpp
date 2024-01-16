@@ -64,59 +64,15 @@ void Engine::innit()
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // Load Scene
-    Node* worldNode = new Node;
+    activeShader = new Shader("../assets/shaders/light/shader.vert", "../assets/shaders/light/shader.frag");
 
-    Camera* camera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
-
-    Model3D* jack = new Model3D;
-    jack->load_cube2();
-
-    Model3D* lilJack = new Model3D;
-    lilJack->load_cube();
-    lilJack->position = glm::vec3(1.25, 0.0, 0.0);
-    lilJack->scale = glm::vec3(0.3, 0.3, 0.3);
-
-    Light* pointLight = new Light;
-    pointLight->position = glm::vec3(0.0, 1.5, 0.0);
-    pointLight->color = glm::vec3(1.0, 1.0, 1.0);
-
-    Model3D* lightCube = new Model3D;
-    lightCube->load_coloredCube(1.0, 1.0, 1.0);
-    lightCube->position = glm::vec3(0.0, 1.5, 0.0);
-    lightCube->scale = glm::vec3(0.1, 0.1, 0.1);
-
-    Light* pointLight2 = new Light;
-    pointLight2->position = glm::vec3(0.0, -1.5, 0.0);
-    pointLight2->color = glm::vec3(1.0, 1.0, 0.0);
-
-    Model3D* lightCube2 = new Model3D;
-    lightCube2->load_coloredCube(1.0, 1.0, 0.0);
-    lightCube2->position = glm::vec3(0.0, -1.5, 0.0);
-    lightCube2->scale = glm::vec3(0.1, 0.1, 0.1);
-
-    // DirectionalLight* sun = new DirectionalLight;
-    // sun->color = glm::vec3(1.0, 0.0, 1.0);
-
-    // SpotLight* spotLight = new SpotLight;
-
-    this->mainMap = new Scene("Scene_Main", worldNode);
-    this->mainMap->addChild(worldNode, camera);
-    this->mainMap->addChild(worldNode, jack);
-    this->mainMap->addChild(worldNode, lilJack);
-    this->mainMap->addChild(worldNode, pointLight);
-    this->mainMap->addChild(worldNode, lightCube);
-    this->mainMap->addChild(worldNode, pointLight2);
-    this->mainMap->addChild(worldNode, lightCube2);
-    // this->mainMap->addChild(worldNode, sun);
-    // this->mainMap->addChild(worldNode, spotLight);
-    this->mainMap->setActiveCamera(camera);
+    loadScene();
 }
 
 void Engine::run() 
 {
     // Call the _ready() method of all objects in the scene
-    mainMap->_readyObjects(Time, Input);
+    activeCamera->_ready(Time, Input);
 
     // render loop
     // -----------
@@ -143,10 +99,6 @@ void Engine::run()
 void Engine::terminate() 
 {
     // Nettoyage de la mémoire
-    // for (Object* object : objects) {
-    //     delete object; // Libération de la mémoire allouée
-    // }
-
     delete Time;
     delete Input;
 
@@ -155,25 +107,41 @@ void Engine::terminate()
     glfwTerminate();
 }
 
+void Engine::loadScene() 
+{
+    activeCamera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
 
+    Model3D* cube1 = new Model3D;
+    cube1->LoadModel("../assets/objects/backpack/backpack.obj");
+    cube1->position = glm::vec3(0.0, 0.0, 0.0);
+    cube1->rotation = glm::vec3(0.0, 0.0, 0.0);
+    // cube1->scale = glm::vec3(0.2, 0.2, 0.2);
+
+    Model3D* cube2 = new Model3D;
+    cube2->LoadModel("../assets/objects/sphereLisseWhite/sphere.obj");
+    cube2->position = glm::vec3(0.0, 2.5, 0.0);
+    cube2->scale = glm::vec3(0.2, 0.2, 0.2);
+    
+    Light* pointLight1 = new Light;
+    pointLight1->position = glm::vec3(0.0, 2.5, 0.0);
+    pointLight1->color = glm::vec3(1.0, 1.0, 1.0);
+
+    DirectionalLight* sun = new DirectionalLight;
+    sun->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+
+    Models3D.push_back(cube1);
+    Models3D.push_back(cube2);
+    Lights.push_back(pointLight1);
+    dirLights.push_back(sun);
+
+}   
 
 void Engine::update() {
 
     // Call the _process() method of all objects in the scene
-    mainMap->_processObjects(Time, Input);
+    activeCamera->_process(Time, Input);
 
-    mainMap->Models3D[0]->position += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
-    mainMap->Models3D[0]->rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
-
-    glm::vec3 jPos = mainMap->Models3D[0]->position;
-    glm::vec3 lilJPos = mainMap->Models3D[1]->position;
-
-    float newX = jPos.x + cos(Time->getDeltaTime()) * (lilJPos.x - jPos.x) - sin(Time->getDeltaTime()) * (lilJPos.z - jPos.z);
-    float newZ = jPos.z + sin(Time->getDeltaTime()) * (lilJPos.x - jPos.x) + cos(Time->getDeltaTime()) * (lilJPos.z - jPos.z);
-
-    mainMap->Models3D[1]->position = glm::vec3(newX, jPos.y, newZ);
-    //mainMap->Models3D[1]->rotation += glm::vec3(25.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
-
+    //Models3D[0]->rotation += glm::vec3(0.0f, 0.0f, 15.0f) * glm::vec3(Time->getDeltaTime());
 }
 
 void Engine::draw() {
@@ -181,15 +149,81 @@ void Engine::draw() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    activeShader->use();
+
+    // POINTLIGHTS - DIRLIGHTS - SPOTLIGHTS //
+    //--------------------------------------//
+
+    // Point Lights
+    int numLights = 0;
+    for (size_t i = 0; i < Lights.size(); ++i) 
+    {
+        std::string indexString = std::to_string(i);
+
+        activeShader->setVec3("pointLights["+ indexString +"].position", Lights[i]->position);
+        activeShader->setVec3("pointLights["+ indexString +"].color", Lights[i]->color);
+
+        activeShader->setVec3("pointLights["+ indexString +"].ambient", Lights[i]->ambient); 
+        activeShader->setVec3("pointLights["+ indexString +"].diffuse", Lights[i]->diffuse); 
+        activeShader->setVec3("pointLights["+ indexString +"].specular", Lights[i]->specular);
+
+        activeShader->setFloat("pointLights["+ indexString +"].constant", Lights[i]->constant); 
+        activeShader->setFloat("pointLights["+ indexString +"].linear", Lights[i]->linear); 
+        activeShader->setFloat("pointLights["+ indexString +"].quadratic", Lights[i]->quadratic); 
+
+        numLights++;
+    }
+    activeShader->setInt("numPointLights", numLights);
+
+    // Directional Lights
+    numLights = 0;
+    for (size_t i = 0; i < dirLights.size(); ++i) 
+    {
+        std::string indexString = std::to_string(i);
+
+        activeShader->setVec3("dirLights["+ indexString +"].direction", dirLights[i]->direction);
+        activeShader->setVec3("dirLights["+ indexString +"].color", dirLights[i]->color);
+
+        activeShader->setVec3("dirLights["+ indexString +"].ambient", dirLights[i]->ambient); 
+        activeShader->setVec3("dirLights["+ indexString +"].diffuse", dirLights[i]->diffuse); 
+        activeShader->setVec3("dirLights["+ indexString +"].specular", dirLights[i]->specular);
+
+        numLights++;
+    }
+    activeShader->setInt("numDirLights", numLights);
+
+    // Spot Lights
+    numLights = 0;
+    for (size_t i = 0; i < spotLights.size(); ++i) 
+    {
+        std::string indexString = std::to_string(i);
+
+        activeShader->setVec3("spotLights["+ indexString +"].position", spotLights[i]->position);
+        activeShader->setVec3("spotLights["+ indexString +"].direction", spotLights[i]->direction);
+        activeShader->setVec3("spotLights["+ indexString +"].color", spotLights[i]->color);
+
+        activeShader->setVec3("spotLights["+ indexString +"].ambient", spotLights[i]->ambient); 
+        activeShader->setVec3("spotLights["+ indexString +"].diffuse", spotLights[i]->diffuse); 
+        activeShader->setVec3("spotLights["+ indexString +"].specular", spotLights[i]->specular);
+
+        activeShader->setFloat("spotLights["+ indexString +"].constant", spotLights[i]->constant); 
+        activeShader->setFloat("spotLights["+ indexString +"].linear", spotLights[i]->linear); 
+        activeShader->setFloat("spotLights["+ indexString +"].quadratic", spotLights[i]->quadratic);
+
+        activeShader->setFloat("spotLights["+ indexString +"].cutOff", spotLights[i]->cutOff); 
+        activeShader->setFloat("spotLights["+ indexString +"].outerCutOff", spotLights[i]->outerCutOff); 
+
+        numLights++;
+    }
+    activeShader->setInt("numSpotLights", numLights);
+
+
+    // POSITION - ROTATION - SCALING //
+    //-------------------------------//
     glm::mat4 modelMatrix;
 
-    for (Model3D* model3D : mainMap->Models3D) 
+    for (Model3D* model3D : Models3D) 
     {
-        model3D->getShader().use();
-
-        // POSITION - ROTATION - SCALING //
-        //-------------------------------//
-
         modelMatrix = glm::mat4(1.0f);
 
         modelMatrix = glm::translate(modelMatrix, model3D->position);
@@ -198,105 +232,13 @@ void Engine::draw() {
         modelMatrix = glm::rotate(modelMatrix, glm::radians(model3D->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)); // Rotation autour de l'axe Z (Roll)
         modelMatrix = glm::scale(modelMatrix, model3D->scale);
 
-        model3D->getShader().setMat4("projection", mainMap->getActiveCamera()->getProjMatrix());
-        model3D->getShader().setMat4("view", mainMap->getActiveCamera()->getViewMatrix());
-        model3D->getShader().setMat4("model", modelMatrix);
+        activeShader->setMat4("projection", activeCamera->getProjMatrix());
+        activeShader->setMat4("view", activeCamera->getViewMatrix());
+        activeShader->setMat4("model", modelMatrix);
 
-        model3D->getShader().setVec3("viewPos", mainMap->getActiveCamera()->position);
+        activeShader->setVec3("viewPos", activeCamera->position);
 
-
-        // POINTLIGHTS - DIRLIGHTS - SPOTLIGHTS //
-        //--------------------------------------//
-
-        // Point Lights
-        int numLights = 0;
-        for (size_t i = 0; i < mainMap->Lights.size(); ++i) 
-        {
-            std::string indexString = std::to_string(i);
-
-            model3D->getShader().setVec3("pointLights["+ indexString +"].position", mainMap->Lights[i]->position);
-            model3D->getShader().setVec3("pointLights["+ indexString +"].color", mainMap->Lights[i]->color);
-
-            model3D->getShader().setVec3("pointLights["+ indexString +"].ambient", mainMap->Lights[i]->ambient); 
-            model3D->getShader().setVec3("pointLights["+ indexString +"].diffuse", mainMap->Lights[i]->diffuse); 
-            model3D->getShader().setVec3("pointLights["+ indexString +"].specular", mainMap->Lights[i]->specular);
-
-            model3D->getShader().setFloat("pointLights["+ indexString +"].constant", mainMap->Lights[i]->constant); 
-            model3D->getShader().setFloat("pointLights["+ indexString +"].linear", mainMap->Lights[i]->linear); 
-            model3D->getShader().setFloat("pointLights["+ indexString +"].quadratic", mainMap->Lights[i]->quadratic); 
-
-            numLights++;
-        }
-        model3D->getShader().setInt("numPointLights", numLights);
-
-        // Directional Lights
-        numLights = 0;
-        for (size_t i = 0; i < mainMap->dirLights.size(); ++i) 
-        {
-            std::string indexString = std::to_string(i);
-
-            model3D->getShader().setVec3("dirLights["+ indexString +"].direction", mainMap->dirLights[i]->direction);
-            model3D->getShader().setVec3("dirLights["+ indexString +"].color", mainMap->dirLights[i]->color);
-
-            model3D->getShader().setVec3("dirLights["+ indexString +"].ambient", mainMap->dirLights[i]->ambient); 
-            model3D->getShader().setVec3("dirLights["+ indexString +"].diffuse", mainMap->dirLights[i]->diffuse); 
-            model3D->getShader().setVec3("dirLights["+ indexString +"].specular", mainMap->dirLights[i]->specular);
-
-            numLights++;
-        }
-        model3D->getShader().setInt("numDirLights", numLights);
-
-        // Spot Lights
-        numLights = 0;
-        for (size_t i = 0; i < mainMap->spotLights.size(); ++i) 
-        {
-            std::string indexString = std::to_string(i);
-
-            model3D->getShader().setVec3("spotLights["+ indexString +"].position", mainMap->spotLights[i]->position);
-            model3D->getShader().setVec3("spotLights["+ indexString +"].direction", mainMap->spotLights[i]->direction);
-            model3D->getShader().setVec3("spotLights["+ indexString +"].color", mainMap->spotLights[i]->color);
-
-            model3D->getShader().setVec3("spotLights["+ indexString +"].ambient", mainMap->spotLights[i]->ambient); 
-            model3D->getShader().setVec3("spotLights["+ indexString +"].diffuse", mainMap->spotLights[i]->diffuse); 
-            model3D->getShader().setVec3("spotLights["+ indexString +"].specular", mainMap->spotLights[i]->specular);
-
-            model3D->getShader().setFloat("spotLights["+ indexString +"].constant", mainMap->spotLights[i]->constant); 
-            model3D->getShader().setFloat("spotLights["+ indexString +"].linear", mainMap->spotLights[i]->linear); 
-            model3D->getShader().setFloat("spotLights["+ indexString +"].quadratic", mainMap->spotLights[i]->quadratic);
-
-            model3D->getShader().setFloat("spotLights["+ indexString +"].cutOff", mainMap->spotLights[i]->cutOff); 
-            model3D->getShader().setFloat("spotLights["+ indexString +"].outerCutOff", mainMap->spotLights[i]->outerCutOff); 
-
-            numLights++;
-        }
-        model3D->getShader().setInt("numSpotLights", numLights);
-
-
-        // MATERIALS //
-        //-----------//
-        model3D->getShader().setInt("material.diffuse", 0);
-        model3D->getShader().setInt("material.specular", 1);
-        model3D->getShader().setFloat("material.shininess", 32.0f);
-
-        // bind diffuse map
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, model3D->diffuse.ID);
-        // bind specular map
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, model3D->specular.ID);
-        
-
-
-        glBindVertexArray(model3D->getVAO()); // Liaison du VAO
-
-        if (model3D->EBO == 0) {
-            glDrawArrays(GL_TRIANGLES, 0, model3D->getSizei());
-        }
-        else {
-            glDrawElements(GL_TRIANGLES, model3D->getSizei(), GL_UNSIGNED_INT, 0);
-        }
-        
-        glBindVertexArray(0); // Déliaison du VAO après avoir fini de dessiner
+        model3D->Draw(*activeShader);
     }
 
     // swap buffers
