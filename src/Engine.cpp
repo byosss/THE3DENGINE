@@ -109,51 +109,157 @@ void Engine::terminate()
 
 void Engine::loadScene() 
 {
-    activeCamera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
+    activeCamera = new Camera(glm::vec3(0.0, 0.0, 0.0));
 
     skybox = new Skybox;
     skybox->load();
 
     Model3D* cube1 = new Model3D;
-    cube1->LoadModel("../assets/objects/backpack/backpack.obj");
-    cube1->position = glm::vec3(0.0, 0.0, 0.0);
+    cube1->LoadModel("../assets/objects/crate/crate.obj");
+    cube1->position = glm::vec3(-7.0, -3.19, -0.3);
     cube1->rotation = glm::vec3(0.0, 0.0, 0.0);
-    // cube1->scale = glm::vec3(0.2, 0.2, 0.2);
+    cube1->scale = glm::vec3(1.5, 1.5, 1.5);
 
-    Model3D* cube2 = new Model3D;
-    cube2->LoadModel("../assets/objects/sphereLisseWhite/sphere.obj");
-    cube2->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
-    cube2->position = glm::vec3(2.0, 0.0, 0.0);
-    cube2->scale = glm::vec3(0.2, 0.2, 0.2);
+    Model3D* backpack = new Model3D;
+    backpack->LoadModel("../assets/objects/backpack/backpack.obj");
+    backpack->position = glm::vec3(-7.0, 0.0, 0.0);
+    backpack->rotation = glm::vec3(0.0, 0.0, 0.0);
+    // backpack->scale = glm::vec3(0.2, 0.2, 0.2);
+
+    Model3D* whiteSphere1 = new Model3D;
+    whiteSphere1->LoadModel("../assets/objects/sphereLisseWhite/sphere.obj");
+    whiteSphere1->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
+    whiteSphere1->position = glm::vec3(-4.0, 0.0, 0.0);
+    whiteSphere1->scale = glm::vec3(0.2, 0.2, 0.2);
     
     Light* pointLight1 = new Light;
-    pointLight1->position = glm::vec3(2.0, 0.0, 0.0);
+    pointLight1->position = glm::vec3(-4.0, 0.0, 0.0);
     pointLight1->color = glm::vec3(1.0, 1.0, 1.0);
+
+    // ---------------------------------------------------------- //
+
+    Model3D* cube2 = new Model3D;
+    cube2->LoadModel("../assets/objects/crate/crate.obj");
+    cube2->position = glm::vec3(8.0, 0.0, -3.0);
+    cube2->rotation = glm::vec3(0.0, 0.0, 0.0);
+    cube2->scale = glm::vec3(0.5, 0.5, 0.5);
+
+    Model3D* cube3 = new Model3D;
+    cube3->LoadModel("../assets/objects/crate/crate.obj");
+    cube3->position = glm::vec3(8.0, 0.0, 0.0);
+    cube3->rotation = glm::vec3(0.0, 0.0, 0.0);
+    cube3->scale = glm::vec3(0.5, 0.5, 0.5);
+
+    Model3D* cube4 = new Model3D;
+    cube4->LoadModel("../assets/objects/crate/crate.obj");
+    cube4->position = glm::vec3(8.0, 0.0, 3.0);
+    cube4->rotation = glm::vec3(0.0, 0.0, 0.0);
+    cube4->scale = glm::vec3(0.5, 0.5, 0.5);
+
+    SpotLight* spotLight1 = new SpotLight;
+    spotLight1->position = glm::vec3(8.0, -1.0, -9.0);
+    spotLight1->direction = glm::vec3(-1.0, -1.0, 0.0);
+    spotLight1->color = glm::vec3(0.5, 1.0, 0.3);
+
+    Model3D* lampe = new Model3D;
+    lampe->LoadModel("../assets/objects/crate/crate.obj");
+    lampe->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
+    lampe->position = glm::vec3(8.0, -1.0, -9.0);
+    lampe->rotation = glm::vec3(0.0, 0.0, -45.0);
+    lampe->scale = glm::vec3(0.05, 0.3, 0.05);
+
+
+    // ---------------------------------------------------------- //
+    
+
+    Models3D.push_back(cube1);
+    Models3D.push_back(backpack);
+    Models3D.push_back(cube2);
+    Models3D.push_back(cube3);
+    Models3D.push_back(cube4);
+    Models3D.push_back(lampe);
+    Models3D.push_back(whiteSphere1);
+    Lights.push_back(pointLight1);
+    spotLights.push_back(spotLight1);
 
     DirectionalLight* sun = new DirectionalLight;
     sun->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 
-    Models3D.push_back(cube1);
-    Models3D.push_back(cube2);
-    Lights.push_back(pointLight1);
     dirLights.push_back(sun);
+
+
+    // ---------------------------------------------------------- //
+
+    Model3D* plats[10][10];
+
+    for (int i = 0; i<10; i++)
+    {
+        for (int j = 0; j<10; j++)
+        {
+            plats[i][j] = new Model3D;
+            plats[i][j]->LoadModel("../assets/objects/crate/crate.obj");
+            plats[i][j]->position = glm::vec3((4.0*i)-18.0, -6.7, (4.0*j)-18.0);
+            plats[i][j]->scale = glm::vec3(2.0, 2.0, 2.0);
+            Models3D.push_back(plats[i][j]);
+        }
+    }
+
+
+    
 
 }   
 
 void Engine::update() {
 
-    // Call the _process() method of all objects in the scene
     activeCamera->_process(Time, Input);
 
-    // Models3D[0]->rotation += glm::vec3(0.0f, 0.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
-    glm::vec3 m1 = Models3D[0]->position;
-    glm::vec3 m2 = Models3D[1]->position;
+    // --------------------------------------------------- //
+    
+    glm::vec3 m1 = Models3D[1]->position;
+    glm::vec3 m2 = Models3D[6]->position;
 
     float newX = m1.x + cos(Time->getDeltaTime()) * (m2.x - m1.x) - sin(Time->getDeltaTime()) * (m2.z - m1.z);
     float newZ = m1.z + sin(Time->getDeltaTime()) * (m2.x - m1.x) + cos(Time->getDeltaTime()) * (m2.z - m1.z);
 
-    Models3D[1]->position = glm::vec3(newX, m1.y, newZ);
+    
+
+    Models3D[6]->position = glm::vec3(newX, m1.y, newZ);
     Lights[0]->position = glm::vec3(newX, m1.y, newZ);
+
+
+    // --------------------------------------------------- //
+    
+    if (cube2)
+        Models3D[2]->position += glm::vec3(0.0f, 1.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
+    else
+        Models3D[2]->position -= glm::vec3(0.0f, 1.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
+    if (Models3D[2]->position.y < -1.5f)
+        cube2 = true;
+    if (Models3D[2]->position.y > 1.5f)
+        cube2 = false;
+
+    Models3D[3]->rotation += glm::vec3(25.0f, 25.0f, 0.0f) * glm::vec3(Time->getDeltaTime());
+
+    if (cube4)
+        Models3D[4]->scale += glm::vec3(0.3f, 0.3f, 0.3f) * glm::vec3(Time->getDeltaTime());
+    else
+        Models3D[4]->scale -= glm::vec3(0.3f, 0.3f, 0.3f) * glm::vec3(Time->getDeltaTime());
+    if (Models3D[4]->scale.x < 0.3f)
+        cube4 = true;
+    if (Models3D[4]->scale.x > 0.8f)
+        cube4 = false;
+
+    // --------------------------------------------------- //
+
+    if (Input->isKeyPressed(GLFW_KEY_UP))
+    {
+        std::cout << "pressed" << std::endl;
+    }
+    if (Input->isKeyRepeated(GLFW_KEY_DOWN))
+    {
+        std::cout << "repeated" << std::endl;
+    }
+
 }
 
 void Engine::draw() {

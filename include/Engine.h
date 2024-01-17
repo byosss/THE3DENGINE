@@ -32,6 +32,10 @@ public:
     void run();
     void terminate();
 
+    bool cube2;
+    bool cube4;
+    bool newLight;
+
 private:
 
     void loadScene();
