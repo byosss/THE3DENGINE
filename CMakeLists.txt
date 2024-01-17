@@ -21,6 +21,7 @@ set(SOURCES
     src/Objects/Light.cpp
     src/Objects/DirectionalLight.cpp
     src/Objects/SpotLight.cpp
+    src/Objects/Skybox.cpp
 
     vendor/glad/glad.c
 )

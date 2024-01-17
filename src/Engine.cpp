@@ -111,6 +111,9 @@ void Engine::loadScene()
 {
     activeCamera = new Camera(glm::vec3(-3.0, 0.0, 0.0));
 
+    skybox = new Skybox;
+    skybox->load();
+
     Model3D* cube1 = new Model3D;
     cube1->LoadModel("../assets/objects/backpack/backpack.obj");
     cube1->position = glm::vec3(0.0, 0.0, 0.0);
@@ -250,6 +253,8 @@ void Engine::draw() {
 
         model3D->Draw();
     }
+
+    skybox->draw(activeCamera->getViewMatrix(), activeCamera->getProjMatrix());
 
     // swap buffers
     // ------------

@@ -32,6 +32,7 @@ public:
 
 private:
     void loadShader(const char* vertexPath, const char* fragmentPath);
+    void checkCompileErrors(GLuint shader, std::string type);
 };
 
 

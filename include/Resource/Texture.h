@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <string>
+#include <vector>
 #include <iostream>
 
 class Texture
@@ -15,6 +16,7 @@ public:
     Texture();
     Texture(std::string Path);
     void load(std::string Path);
+    void loadCubemap(std::vector<std::string> faces);
 };
 
 

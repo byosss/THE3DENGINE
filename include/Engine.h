@@ -11,6 +11,7 @@
 #include "Objects/Light.h"
 #include "Objects/DirectionalLight.h"
 #include "Objects/SpotLight.h"
+#include "Objects/Skybox.h"
 
 class Engine 
 {
@@ -20,6 +21,7 @@ public:
     InputManager* Input;
 
     Camera* activeCamera;
+    Skybox* skybox;
 
     std::vector<Model3D*> Models3D;
     std::vector<Light*> Lights;
