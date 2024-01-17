@@ -3,26 +3,27 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 
 void Model3D::LoadModel(std::string fileName) {
 
     std::string basePath = fileName.substr(0, fileName.find_last_of('/')) + "/";
     ReadOBJ(fileName, basePath);
+
+    this->shader = new Shader();
 }
 
 void Model3D::LoadModel(std::string fileName, std::string basePath)	{
 
     ReadOBJ(fileName, basePath);
+
+    this->shader = new Shader();
 }
 
 
-void Model3D::Draw(Shader shaderProgram) {
+void Model3D::Draw() {
 
     for (int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw(shaderProgram);
+        meshes[i].Draw(*shader);
 }
 
 void Model3D::ReadOBJ(std::string fileName, std::string basePath) {
@@ -165,53 +166,19 @@ Texture Model3D::LoadTexture(std::string path, std::string type) {
         }
     }
 
-    Texture currentTexture;
-    currentTexture.id = readTextureFromFile(path.c_str());
+    Texture currentTexture(path);
     currentTexture.type = std::string(type);
-    currentTexture.path = path;
 
     loadedTextures.push_back(currentTexture);
 
     return currentTexture;
 }
 
-GLuint Model3D::readTextureFromFile(char const * path)
+
+void Model3D::setShader(const char* vertexPath, const char* fragmentPath)
 {
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
+    this->shader = new Shader(vertexPath,fragmentPath);
 }
-
 
 Model3D::~Model3D() {
 

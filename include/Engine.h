@@ -20,7 +20,6 @@ public:
     InputManager* Input;
 
     Camera* activeCamera;
-    Shader* activeShader;
 
     std::vector<Model3D*> Models3D;
     std::vector<Light*> Lights;

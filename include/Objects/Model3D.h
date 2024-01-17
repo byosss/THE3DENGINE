@@ -10,12 +10,16 @@
 class Model3D : public Node
 {
 public:
+    Shader* shader;
+
     ~Model3D();
 
     void LoadModel(std::string fileName);
     void LoadModel(std::string fileName, std::string basePath);
 
-    void Draw(Shader shaderProgram);    
+    void setShader(const char* vertexPath, const char* fragmentPath);
+
+    void Draw();    
 
 private:
     std::vector<Mesh> meshes;

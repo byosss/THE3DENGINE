@@ -13,6 +13,7 @@ set(SOURCES
 
     src/Resource/Shader.cpp
     src/Resource/Mesh.cpp
+    src/Resource/Texture.cpp
 
     src/Objects/Node.cpp
     src/Objects/Camera.cpp
