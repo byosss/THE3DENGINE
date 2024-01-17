@@ -35,7 +35,7 @@ Once the build process is complete, you can run the executable generated in the 
 
 ## 3. Scenario
 
-### scene and objects description
+### 3.1 scene and objects description
 
 The project revolves around three categories of classes:
 
@@ -48,3 +48,19 @@ General objects are instantiated once, with the Engine class at the core of appl
 Objects, such as Model3D and various lights, are instantiated and stored in std::vectors as needed. All objects support dynamic modifications such as real-time changes in position, rotation, and scale.
 
 Resource objects, including Shader, Texture, and Mesh, ensure the management of graphical resources. Shader compilation and management are handled for rendering, while Texture and Mesh enable dynamic modifications and graphical optimization.
+
+### 3.2 functionalities
+
+The scene incorporates several key functionalities to enhance user interaction:
+
+**Camera Movement:**
+The scene allows the user to control the camera using the **WASD keys** for movement. This enables dynamic exploration of the 3D environment.
+
+**Wireframe Mode Toggle:**
+Pressing and holding the **Q key** toggles the wireframe mode for Model3D objects. This feature provides a visual representation of the object's wireframe structure.
+
+**Dynamic PointLight Manipulation:**
+The **Up key** dynamically adds PointLight objects to the scene, contributing to real-time changes in lighting. Conversely, the **Down key** removes PointLights as needed.
+
+**Application Termination:**
+Pressing the **Escape (Esc) key** allows the user to gracefully exit the application, providing a convenient way to terminate the program.
