@@ -7,6 +7,7 @@
 - 4. Implementation details
 - 5. Graphical user interface presentation / user manual
 - 6. Conclusions and further developments
+- 7. References
 
 ## 2. Subject Specification
 
@@ -93,7 +94,7 @@ The envisioned ResourceManager class reflects a forward-looking approach, antici
 
 Each Model3D instance is associated with a shader, containing instructions for rendering surfaces. Within a Model3D, multiple meshes exist, each potentially linked to one or more textures. During the main rendering loop:
 
-- Lighting Calculation: The Engine computes lighting effects for the scene.
+- Lighting Calculation: The Engine computes lighting effects for the scene (in theory it is possible to have an infinite number of lights, but the computational requirements increase exponentially).
 
 - Shader Activation: The Engine activates each Model3D's shader for rendering.
 
