@@ -205,7 +205,8 @@ void Engine::loadScene()
     }
 
 
-    
+    newLight = false;
+    delLight = false;
 
 }   
 
@@ -251,13 +252,46 @@ void Engine::update() {
 
     // --------------------------------------------------- //
 
-    if (Input->isKeyPressed(GLFW_KEY_UP))
+    if (Input->isKeyRepeated(GLFW_KEY_UP))
     {
-        std::cout << "pressed" << std::endl;
+        if (!newLight) {
+            if (Lights.size() < 25) {
+                Light* pointLight = new Light;
+                pointLight->position = glm::vec3(12.0, 0.0, 1.0*Lights.size()-12.0);
+                pointLight->color = glm::vec3(1.0, 1.0, 1.0);
+
+                Model3D* whiteSphere = new Model3D;
+                whiteSphere->LoadModel("../assets/objects/sphereLisseWhite/sphere.obj");
+                whiteSphere->setShader("../assets/shaders/basic/shader.vert", "../assets/shaders/basic/shader.frag");
+                whiteSphere->position = pointLight->position;
+                whiteSphere->scale = glm::vec3(0.2, 0.2, 0.2);
+
+                Lights.push_back(pointLight);
+                Models3D.push_back(whiteSphere);
+            }
+            newLight = true;
+        }
     }
+    if (Input->isKeyReleased(GLFW_KEY_UP))
+    {
+        newLight = false;
+    }
+
     if (Input->isKeyRepeated(GLFW_KEY_DOWN))
     {
-        std::cout << "repeated" << std::endl;
+        if (!delLight) {
+
+            if (Lights.size() > 1){
+                Lights.pop_back();
+                Models3D.pop_back();
+            }
+
+            delLight = true;
+        }
+    }
+    if (Input->isKeyReleased(GLFW_KEY_DOWN))
+    {
+        delLight = false;
     }
 
 }

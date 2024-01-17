@@ -35,6 +35,7 @@ public:
     bool cube2;
     bool cube4;
     bool newLight;
+    bool delLight;
 
 private:
 

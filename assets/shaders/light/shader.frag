@@ -40,7 +40,7 @@ struct SpotLight {
 
 out vec4 FragColor;
 
-#define MAX_POINT_LIGHTS 10
+#define MAX_POINT_LIGHTS 25
 #define MAX_DIR_LIGHTS 5
 #define MAX_SPOT_LIGHTS 5
 
