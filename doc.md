@@ -32,3 +32,19 @@ After CMake successfully generates the build files, execute the build process: c
 
 Run the Project:
 Once the build process is complete, you can run the executable generated in the 'build' directory : ./exam
+
+## 3. Scenario
+
+### scene and objects description
+
+The project revolves around three categories of classes:
+
+- General (Engine, TimeManager, InputManager).
+- Objects (Model3D, Light, DirectionalLight, SpotLight, Skybox, Camera).
+- Resources (Shader, Texture, Mesh).
+
+General objects are instantiated once, with the Engine class at the core of application logic. It handles scene loading, the main loop, object interactions, and manages the TimeManager and InputManager.
+
+Objects, such as Model3D and various lights, are instantiated and stored in std::vectors as needed. All objects support dynamic modifications such as real-time changes in position, rotation, and scale.
+
+Resource objects, including Shader, Texture, and Mesh, ensure the management of graphical resources. Shader compilation and management are handled for rendering, while Texture and Mesh enable dynamic modifications and graphical optimization.
