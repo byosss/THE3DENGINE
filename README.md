@@ -1,6 +1,6 @@
 # OpenGL-Learning
 
-This project is currently designed for educational purposes (for me) to learn graphics programming. It is not intended for production use but rather for learning and personal development.
+rendering engine with opengl - review
 
 ## Prerequisites
 
