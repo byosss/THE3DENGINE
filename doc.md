@@ -4,18 +4,9 @@
 - 1. Contents
 - 2. Subject specification
 - 3. Scenario
-- 3.1. scene and objects description
-- 3.2. functionalities
 - 4. Implementation details
-- 4.1. functions and special algorithms
-- 4.1.1. possible solutions
-- 4.1.2. the motivation of the chosen approach
-- 4.2. graphics model
-- 4.3. data structures
-- 4.4. class hierarchy
 - 5. Graphical user interface presentation / user manual
 - 6. Conclusions and further developments
-- 7. References
 
 ## 2. Subject Specification
 
