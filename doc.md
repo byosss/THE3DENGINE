@@ -89,3 +89,13 @@ The decision to centralize the application's logic within the Engine class stems
 The introduction of dedicated classes like TimeManager and InputManager serves to encapsulate specific functionalities, promoting a clean separation of concerns. This modular structure not only improves code readability but also simplifies debugging and future updates.
 
 The envisioned ResourceManager class reflects a forward-looking approach, anticipating the potential growth of the project. By segregating resource-related tasks, it will enable efficient resource utilization and aid in the seamless integration of additional content as the application evolves.
+
+### 4.2. Graphics Model
+
+Each Model3D instance is associated with a shader, containing instructions for rendering surfaces. Within a Model3D, multiple meshes exist, each potentially linked to one or more textures. During the main rendering loop:
+
+- Lighting Calculation: The Engine computes lighting effects for the scene.
+
+- Shader Activation: The Engine activates each Model3D's shader for rendering.
+
+- Mesh Rendering: The Engine calls a draw function on each mesh, rendering individual components. This process repeats for all meshes, efficiently rendering the entire 3D scene.
