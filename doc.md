@@ -1,6 +1,6 @@
 # Project-Documentation
 
-## 1.Contents
+## 1. Contents
 1. Contents
 2. Subject specification
 3. Scenario
@@ -8,8 +8,8 @@
     3.2. functionalities
 4. Implementation details
     4.1. functions and special algorithms
-           4.1.1. possible solutions
-           4.1.2. the motivation of the chosen approach
+        4.1.1. possible solutions
+        4.1.2. the motivation of the chosen approach
     4.2. graphics model
     4.3. data structures
     4.4. class hierarchy
@@ -17,7 +17,7 @@
 6. Conclusions and further developments
 7. References
 
-## 2.Subject Specification
+## 2. Subject Specification
 
 ### Project Overview
 The project is a rendering engine utilizing the OpenGL API and implemented in C++. Its primary goal is to serve as an optimized yet powerful engine capable of real-time modification of certain 3D object attributes, such as position, rotation, scaling, and lighting effects.
