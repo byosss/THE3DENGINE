@@ -1,8 +1,8 @@
 # Set the minimum CMake version required
 cmake_minimum_required(VERSION 3.10)
 
-# Project Name: "Aurora"
-project("Aurora" LANGUAGES C CXX)
+# Project Name: "exam"
+project("exam" LANGUAGES C CXX)
 
 # Define source files
 set(SOURCES
