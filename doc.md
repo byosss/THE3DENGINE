@@ -37,17 +37,16 @@ Once the build process is complete, you can run the executable generated in the 
 
 ### 3.1 Scene and objects description
 
-The project revolves around three categories of classes:
+The virtual scene crafted for this project serves as a demonstration, showcasing the capabilities of the rendering engine. It encompasses key elements designed to highlight various features:
 
-- General (Engine, TimeManager, InputManager).
-- Objects (Model3D, Light, DirectionalLight, SpotLight, Skybox, Camera).
-- Resources (Shader, Texture, Mesh).
+- Camera Control: Users can manipulate the camera using intuitive controls, such as the WASD keys, providing a firsthand experience of dynamic exploration within the 3D environment.
 
-General objects are instantiated once, with the Engine class at the core of application logic. It handles scene loading, the main loop, object interactions, and manages the TimeManager and InputManager.
+- Model3D Instances: Multiple instances of the Model3D class populate the scene, presenting diverse objects with distinct meshes, textures, and shaders. These objects demonstrate the rendering engine's ability to handle complex 3D models.
 
-Objects, such as Model3D and various lights, are instantiated and stored in std::vectors as needed. All objects support dynamic modifications such as real-time changes in position, rotation, and scale.
+- Lights Variety: The scene incorporates different types of lights, including PointLight, DirectionalLight, and SpotLight. This variety showcases the engine's capacity to handle various lighting scenarios, contributing to the visual richness of the scene.
+    Dynamic PointLight Manipulation: Users can dynamically add and remove PointLight sources during runtime using the Up and Down keys. This interactive feature demonstrates the engine's real-time adaptability to changes in the lighting environment.
 
-Resource objects, including Shader, Texture, and Mesh, ensure the management of graphical resources. Shader compilation and management are handled for rendering, while Texture and Mesh enable dynamic modifications and graphical optimization.
+This curated scene not only serves as a demonstration but also provides a hands-on experience for users to interact with and appreciate the rendering engine's capabilities in handling cameras, complex 3D models, and diverse lighting scenarios.
 
 ### 3.2 Functionalities
 
@@ -99,3 +98,51 @@ Each Model3D instance is associated with a shader, containing instructions for r
 - Shader Activation: The Engine activates each Model3D's shader for rendering.
 
 - Mesh Rendering: The Engine calls a draw function on each mesh, rendering individual components. This process repeats for all meshes, efficiently rendering the entire 3D scene.
+
+### 4.3. Data Structures
+
+Currently, for simplicity, instances of Model3D and various lights are stored in std::vector containers as attributes of the Engine class. This straightforward approach facilitates ease of implementation and quick access to the necessary components during the rendering process.
+
+However, as part of future enhancements, there is a planned introduction of a dedicated Scene class. The Scene class will serve to unify and manage the different elements within the virtual environment, providing a more organized and extensible structure. This abstraction aims to enhance code clarity, maintainability, and scalability as the project evolves.
+
+### 4.4. class hierarchy
+
+The project revolves around three categories of classes:
+
+- General (Engine, TimeManager, InputManager).
+- Objects (Model3D, Light, DirectionalLight, SpotLight, Skybox, Camera).
+- Resources (Shader, Texture, Mesh).
+
+General objects are instantiated once, with the Engine class at the core of application logic. It handles scene loading, the main loop, object interactions, and manages the TimeManager and InputManager.
+
+Objects, such as Model3D and various lights, are instantiated and stored in std::vectors as needed. All objects support dynamic modifications such as real-time changes in position, rotation, and scale.
+
+Resource objects, including Shader, Texture, and Mesh, ensure the management of graphical resources. Shader compilation and management are handled for rendering, while Texture and Mesh enable dynamic modifications and graphical optimization.
+
+## 5. user manual
+
+Camera Movement: **WASD keys** for camera movement.
+
+Wireframe Mode : hold **Q key** to switch in wireframe mode for Model3D objects.
+
+Dynamic PointLight Manipulation: **Up key** to add PointLight objects, **Down key** to remove PointLights.
+
+Application Termination: **Escape (Esc) key** to gracefully exit the application.
+
+## 6. Conclusions and Further Developments
+
+In conclusion, the present implementation lays a strong foundation for the project's core functionalities. As we look towards the future, several key areas for improvement and expansion have been identified:
+
+- Culling Optimization: Implement advanced culling techniques to enhance rendering efficiency by selectively excluding objects outside the view frustum.
+
+- Shadow Rendering: Explore and integrate shadow mapping techniques to introduce realistic shadow effects, adding depth and dimensionality to the scenes.
+
+- Graphical User Interface (GUI) Refinement: Enhance the GUI with interactive elements and improved user feedback, ensuring a more intuitive and polished user experience.
+
+- Resource Management System: Develop a robust ResourceManager class to efficiently handle and optimize the loading and unloading of graphical resources, contributing to improved performance.
+
+These proposed developments aim to elevate the overall quality of the application, introducing advanced rendering features and optimizing resource utilization for a more immersive and efficient user experience.
+
+## 7. References
+
+https://learnopengl.com/
