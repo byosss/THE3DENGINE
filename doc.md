@@ -64,3 +64,28 @@ The **Up key** dynamically adds PointLight objects to the scene, contributing to
 
 **Application Termination:**
 Pressing the **Escape (Esc) key** allows the user to gracefully exit the application, providing a convenient way to terminate the program.
+
+## 4. Implementation details
+
+### 4.1
+#### 4.1.1. Possible Solutions
+
+In handling the core logic of the application, a central class named Engine has been designed. The Engine class is responsible for orchestrating key aspects of the program, including:
+
+- Scene Loading: Manages the loading and initialization of the virtual scene. This involves loading 3D models, textures, and other assets required for the scene's composition.
+
+- Main Rendering Loop: Orchestrates the main rendering loop, ensuring the continuous update and display of the graphical elements within the scene. This loop is crucial for maintaining real-time interactivity and responsiveness.
+
+- Time Management: For precise control over time-related functionalities, a separate TimeManager class has been introduced. This class provides methods for measuring frame times, handling delta time calculations, and controlling the overall temporal aspects of the application.
+
+- Input Handling: The Engine class interfaces with an InputManager to efficiently manage user inputs. This includes handling keyboard, mouse, and potentially other input devices. The InputManager class abstracts away the intricacies of handling various input sources.
+
+- Resource Management (Future Consideration): While not implemented at the moment, a ResourceManager class is anticipated in the future. This class would be responsible for managing and optimizing the usage of resources such as textures, models, and shaders. Its inclusion would further enhance the scalability and performance of the application as it evolves.
+
+#### 4.1.2. The Motivation of the Chosen Approach
+
+The decision to centralize the application's logic within the Engine class stems from the need for a modular and extensible design. This approach allows for easy integration of new features, facilitates code organization, and enhances the maintainability of the project.
+
+The introduction of dedicated classes like TimeManager and InputManager serves to encapsulate specific functionalities, promoting a clean separation of concerns. This modular structure not only improves code readability but also simplifies debugging and future updates.
+
+The envisioned ResourceManager class reflects a forward-looking approach, anticipating the potential growth of the project. By segregating resource-related tasks, it will enable efficient resource utilization and aid in the seamless integration of additional content as the application evolves.
