@@ -35,7 +35,7 @@ Once the build process is complete, you can run the executable generated in the 
 
 ## 3. Scenario
 
-### 3.1 scene and objects description
+### 3.1 Scene and objects description
 
 The project revolves around three categories of classes:
 
@@ -49,7 +49,7 @@ Objects, such as Model3D and various lights, are instantiated and stored in std:
 
 Resource objects, including Shader, Texture, and Mesh, ensure the management of graphical resources. Shader compilation and management are handled for rendering, while Texture and Mesh enable dynamic modifications and graphical optimization.
 
-### 3.2 functionalities
+### 3.2 Functionalities
 
 The scene incorporates several key functionalities to enhance user interaction:
 
@@ -67,7 +67,7 @@ Pressing the **Escape (Esc) key** allows the user to gracefully exit the applica
 
 ## 4. Implementation details
 
-### 4.1
+### 4.1 Functions and special algorithms
 #### 4.1.1. Possible Solutions
 
 In handling the core logic of the application, a central class named Engine has been designed. The Engine class is responsible for orchestrating key aspects of the program, including:
