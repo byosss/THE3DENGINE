@@ -54,7 +54,7 @@ Resource objects, including Shader, Texture, and Mesh, ensure the management of 
 The scene incorporates several key functionalities to enhance user interaction:
 
 **Camera Movement:**
-The scene allows the user to control the camera using the <span style="color: red;">**WASD keys**</span> for movement. This enables dynamic exploration of the 3D environment.
+The scene allows the user to control the camera using the **WASD keys** for movement. This enables dynamic exploration of the 3D environment.
 
 **Wireframe Mode Toggle:**
 Pressing and holding the **Q key** toggles the wireframe mode for Model3D objects. This feature provides a visual representation of the object's wireframe structure.
