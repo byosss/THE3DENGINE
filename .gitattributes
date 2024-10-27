@@ -1,5 +1,2 @@
-src/glad.c linguist-vendored
-include/GLFW/* linguist-vendored
-include/glad/* linguist-vendored
-include/KHR/* linguist-vendored
-include/stb_image.h linguist-vendored
+vendor/* linguist-vendored
+lib/* linguist-vendored
