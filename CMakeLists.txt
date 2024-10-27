@@ -1,62 +1,31 @@
-# Set the minimum CMake version required
 cmake_minimum_required(VERSION 3.10)
 
-# Project Name: "Aurora"
-project("Aurora" LANGUAGES C CXX)
+# Set the project name
+project("THE3DENGINE")
 
-# Define source files
-set(SOURCES
-    src/main.cpp
-    src/Engine.cpp
-    src/Renderer.cpp
-    src/InputManager.cpp
-    src/TimeManager.cpp
-    src/ResourceManager.cpp
-    src/Scene.cpp
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-    src/Resource/Resource.cpp
-    src/Resource/Shader.cpp
-    src/Resource/Texture.cpp
-    src/Resource/Vertex.cpp
-    src/Resource/Material.cpp
+# Set var for different directory
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/inc")
+set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
+set(VENDOR_DIR "${CMAKE_SOURCE_DIR}/vendor")
 
-    src/Objects/Object.cpp
-    src/Objects/Node.cpp
-    src/Objects/Camera.cpp
-    src/Objects/Model3D.cpp
-    src/Objects/Light.cpp
-    src/Objects/DirectionalLight.cpp
-    src/Objects/SpotLight.cpp
+# Add the source and header files
+file(GLOB_RECURSE SOURCES "${SOURCE_DIR}/*.cpp")
+file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/*.h" )
 
-    vendor/glad/glad.c
-)
+# Add glad.c to the sources
+list(APPEND SOURCES "${VENDOR_DIR}/glad/glad.c")
 
-# Define source files
-# file(GLOB_RECURSE SOURCES "src/*.c")
+# Include directories
+include_directories(${INCLUDE_DIR}
+                    ${VENDOR_DIR})
 
-# Define include directories
-set(INCLUDES 
-    include/
-    vendor/
-)
+# Add the executable
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-
-# Define lib files & directory
-link_directories(lib)
-set(LIBS
-    libglfw3.a
-    opengl32
-    gdi32
-)
-
-# Create an executable named "Aurora"
-add_executable(${PROJECT_NAME} ${SOURCES})
-
-# Add the include directory
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDES})
-
-# Link the library files (.a, .so, .lib, .dll)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
-
-# Compile all source files using g++ (not gcc)
-set_source_files_properties(${SOURCES} PROPERTIES LANGUAGE CXX)
+# Link the GLFW library
+target_link_libraries(${PROJECT_NAME} ${LIB_DIR}/libglfw3.a)
