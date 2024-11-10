@@ -1,37 +1,30 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
+#include "PhysicsEngine.h"
+#include "RendererEngine.h"
 
-#include "Scene.h"
+#include "ResourceManager.h"
+#include "TimeManager.h"
+#include "EventManager.h"
+#include "SceneManager.h"
 
-#include "Objects/Object.h"
-#include "Objects/Node.h"
-#include "Objects/Camera.h"
-#include "Objects/Model3D.h"
-#include "Objects/Light.h"
-#include "Objects/DirectionalLight.h"
-#include "Objects/SpotLight.h"
 
-class Engine 
-{
+class Engine {
 public:
+    Engine(GLFWwindow* window);
 
-    TimeManager* Time;
-    InputManager* Input;
-
-    Scene* mainMap;
-
-    void innit();
-    void run();
-    void terminate();
+    void load();
+    
+    void tick();
+    void pollEvents();
+    void update();
+    void render();
 
 private:
-
-    void update();
-    void draw();
+    RendererEngine Renderer;
+    // PhysicsEngine Physics;
+    TimeManager Time;
+    EventManager Event;
+    ResourceManager Resources;
+    SceneManager sceneManager;
 };
-
-#endif

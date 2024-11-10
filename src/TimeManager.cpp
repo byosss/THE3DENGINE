@@ -1,39 +1,24 @@
 #include "TimeManager.h"
 
-TimeManager::TimeManager(GLFWwindow* window) : window(window)  {
+TimeManager::TimeManager() : deltaTime(0.0f), lastFrame(0.0f) { }
 
-    this->previousTime = 0.0;
-    this->currentTime = 0.0;
-    this->fpsRefreshRate = 0;
-
-    this->showFPS = true;
-
+void TimeManager::update() 
+{
+    deltaTime = glfwGetTime() - lastFrame;
+    lastFrame += deltaTime;
 }
 
-void TimeManager::update(){
-    
-    currentTime = glfwGetTime();
-    deltaTime = currentTime - previousTime;
-    previousTime = currentTime;
-    fpsRefreshRate++;
-
-    if (showFPS)
-    {
-        updateFPS();
-    }
+float TimeManager::getTime() 
+{
+    return glfwGetTime();
 }
 
-void TimeManager::updateFPS(){
-    
-    if (fpsRefreshRate >= 500)  // update the FPS counter each 500 frames
-    {
-        glfwSetWindowTitle(window, ("OpenGL - " + std::to_string(1.0 / deltaTime) + 
-                                    "FPS / " + std::to_string((deltaTime) * 1000) + "ms").c_str());
-
-        fpsRefreshRate = 0;
-    }
-}
-
-double TimeManager::getDeltaTime(){
+float TimeManager::getDeltaTime() 
+{
     return deltaTime;
+}
+
+float TimeManager::getFPS() 
+{
+    return 1.0f / deltaTime;
 }

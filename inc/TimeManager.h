@@ -1,29 +1,19 @@
-#ifndef TIMEMANAGER_H
-#define TIMEMANAGER_H
+#pragma once
 
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-class TimeManager
-{
-private:
-    GLFWwindow* window;
-
-    double previousTime;
-    double currentTime;
-    double deltaTime;
-
-    bool showFPS;
-    unsigned int fpsRefreshRate;
-
+class TimeManager {
 public:
+    TimeManager();
 
-    TimeManager(GLFWwindow* window);
+    void update();        // update time values
 
-    void update();
-    void updateFPS();
+    float getTime();      // elapsed time since the start of the application
+    float getDeltaTime(); // time between the current frame and the last frame
+    float getFPS();       // frames per second
 
-    double getDeltaTime();
+private:
+    float deltaTime;
+    float lastFrame;
 };
-
-#endif
