@@ -5,13 +5,13 @@ Engine::Engine(GLFWwindow* window) : //Physics(),
                                      Time(),
                                      Event(window),
                                      Resources(),
-                                     sceneManager()
+                                     scene()
 {
 }
 
 void Engine::load()
 {
-    sceneManager.loadScene();
+    scene.load();
 }
 
 void Engine::tick()
@@ -26,13 +26,13 @@ void Engine::pollEvents()
 
 void Engine::update()
 {
-    sceneManager.getCurrentScene()->update( Time, Event );
+    scene.update( Time, Event );
     // Physics.update();
 }
 
 void Engine::render()
 {
     Renderer.clear();
-    // Renderer.draw( SceneManager.getScene() );
+    // Renderer.draw( &scene );
     Renderer.swapBuffers();
 }

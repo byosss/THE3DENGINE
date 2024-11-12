@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Scene/Scene.h"
+
 class RendererEngine
 {
 public:
@@ -10,7 +12,7 @@ public:
     ~RendererEngine();
 
     void clear();
-    void draw();
+    void draw( Scene* scene );
     void swapBuffers();
 
 private:

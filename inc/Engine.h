@@ -6,7 +6,7 @@
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "EventManager.h"
-#include "SceneManager.h"
+#include "Scene/Scene.h"
 
 
 class Engine {
@@ -26,5 +26,5 @@ private:
     TimeManager Time;
     EventManager Event;
     ResourceManager Resources;
-    SceneManager sceneManager;
+    Scene scene;
 };
