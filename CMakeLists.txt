@@ -17,10 +17,9 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Test configuration
-enable_testing()
-
 # Add subdirectories
 add_subdirectory(Engine)
 add_subdirectory(Editor)
 
+# Add dependencies
+add_dependencies(Editor Engine)
