@@ -20,8 +20,6 @@ jobs:
 
       - name: Set up CMake
         uses: actions/setup-cmake@v3
-        with:
-          cmake-version: '3.10'
 
       - name: Set up build directory
         run: |
