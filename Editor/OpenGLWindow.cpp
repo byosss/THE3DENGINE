@@ -15,22 +15,15 @@ OpenGLWindow::~OpenGLWindow() {
 
 void OpenGLWindow::initializeGL() {
 
-    // connect to the OpenGL context
-    QOpenGLContext* context = QOpenGLContext::currentContext();
-
-    if (!context) {
+    // Check context
+    if (!QOpenGLContext::currentContext()) {
         std::cerr << "Failed to get OpenGL context" << std::endl;
         return;
     }
 
-    // Adapter getProcAddress pour GLAD
-    auto getProcAddress = [](const char* name) -> void* {
-        return reinterpret_cast<void*>(QOpenGLContext::currentContext()->getProcAddress(name));
-    };
-
-    // Initialiser GLAD avec la lambda
-    if (!gladLoadGLLoader((GLADloadproc)getProcAddress)) {
-        std::cerr <<  "Failed to initialize GLAD!" << std::endl;
+    // Initialiser GLAD
+    if (!initGlad()) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
         return;
     }
 
@@ -43,4 +36,14 @@ void OpenGLWindow::paintGL()
     engine.update();
     engine.draw();
     update();
+}
+
+bool OpenGLWindow::initGlad() 
+{
+    // Fonction pour charger les fonctions OpenGL avec GLAD
+    auto getProcAddress = [](const char* name) -> void* {
+        return reinterpret_cast<void*>(QOpenGLContext::currentContext()->getProcAddress(name));
+    };
+
+    return gladLoadGLLoader((GLADloadproc)getProcAddress) != 0;
 }

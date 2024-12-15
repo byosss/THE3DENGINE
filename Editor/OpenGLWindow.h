@@ -14,4 +14,6 @@ protected:
 
 private:
     Engine engine;
+
+    bool initGlad();
 };
