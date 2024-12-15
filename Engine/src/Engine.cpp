@@ -2,6 +2,15 @@
 
 #include <math.h>
 
+Engine::Engine() : Time(TimeManager()) 
+{
+    // Initialize the engine
+    // ---------------------
+    R = 0.0f;
+    G = 0.0f;
+    B = 0.0f;
+}
+
 void Engine::init() 
 {
     // Print OpenGL version
@@ -23,15 +32,15 @@ void Engine::update()
 {
     // Update the engine
     // -----------------
+    Time.update();
 
-    static auto startTime = std::chrono::high_resolution_clock::now();
-    auto currentTime = std::chrono::duration<float, std::chrono::seconds::period>(std::chrono::high_resolution_clock::now() - startTime).count();
-
-    R = sin(currentTime) / 2.0f + 0.5f;
-    G = sin(currentTime + 2.0f) / 2.0f + 0.5f;
-    B = sin(currentTime + 4.0f) / 2.0f + 0.5f;
+    R = sin(Time.getElapsedTime()) / 2.0f + 0.5f;
+    G = sin(Time.getElapsedTime() + 2.0f) / 2.0f + 0.5f;
+    B = sin(Time.getElapsedTime() + 4.0f) / 2.0f + 0.5f;
 
     std::cout << "R: " << R << " G: " << G << " B: " << B << std::endl;
+    std::cout << "FPS: " << Time.getFPS() << std::endl;
+    std::cout << "DeltaTime: " << Time.getDeltaTime() << std::endl;
 }
 
 void Engine::draw() 

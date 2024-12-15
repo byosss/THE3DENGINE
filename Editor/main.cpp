@@ -9,9 +9,5 @@ int main(int argc, char *argv[])
     OpenGLWindow mainWindow;
     mainWindow.show();
 
-    QSurfaceFormat format;
-    format.setSwapInterval(1); // Active VSync
-    QSurfaceFormat::setDefaultFormat(format);
-
     return app.exec();
 }

@@ -1,12 +1,15 @@
 #pragma once
 
 #include <iostream>
-#include <chrono>
 
 #include "glad/glad.h"
 
+#include "TimeManager.h"
+
 class Engine {
 public:
+    Engine();
+
     void init();
     void terminate();
 
@@ -15,4 +18,6 @@ public:
 
 private:
     float R, G, B;
+
+    TimeManager Time;
 };
