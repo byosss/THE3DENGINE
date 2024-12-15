@@ -14,12 +14,10 @@ else()
 endif()
 
 # Définit le chemin où les binaires seront générés.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # Exécutable
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # Bibliothèque dynamique
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # Bibliothèque statique
 
 # Add subdirectories
 add_subdirectory(Engine)
 add_subdirectory(Editor)
-
-# Add dependencies
-add_dependencies(Editor Engine)
