@@ -1,6 +1,0 @@
-set(__QT_DEPLOY_TARGET_Engine_FILE C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/bin/libEngine.dll)
-set(__QT_DEPLOY_TARGET_Engine_TYPE SHARED_LIBRARY)
-set(__QT_DEPLOY_TARGET_Engine_RUNTIME_DLLS )
-set(__QT_DEPLOY_TARGET_Editor_FILE C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/bin/Editor.exe)
-set(__QT_DEPLOY_TARGET_Editor_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_Editor_RUNTIME_DLLS C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/bin/libEngine.dll;C:/Qt/6.8.0/mingw_64/bin/Qt6Widgets.dll;C:/Qt/6.8.0/mingw_64/bin/Qt6OpenGL.dll;C:/Qt/6.8.0/mingw_64/bin/Qt6Gui.dll;C:/Qt/6.8.0/mingw_64/bin/Qt6Core.dll)
