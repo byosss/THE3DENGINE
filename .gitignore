@@ -9,7 +9,6 @@
 
 # Ignorer les fichiers de builds
 /build/*
-!/build/.gitkeep
 *.o
 *.exe
 
