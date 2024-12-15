@@ -1,0 +1,8 @@
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/CMakeFiles/edit_cache.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Engine/CMakeFiles/Engine.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Engine/CMakeFiles/edit_cache.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Engine/CMakeFiles/rebuild_cache.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Editor/CMakeFiles/Editor.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Editor/CMakeFiles/edit_cache.dir
+C:/Users/Karim/Desktop/code/C-C++/THE3DENGINE/build/Editor/CMakeFiles/rebuild_cache.dir
