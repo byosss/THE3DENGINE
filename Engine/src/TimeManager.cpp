@@ -6,7 +6,7 @@ TimeManager::TimeManager() {
     m_deltaTime = std::chrono::duration<float>::zero();
 }
 
-void TimeManager::update() 
+void TimeManager::tick() 
 {
     m_deltaTime = std::chrono::high_resolution_clock::now() - m_lastTime;
     m_lastTime = std::chrono::high_resolution_clock::now();

@@ -5,21 +5,25 @@ OpenGLWindow::OpenGLWindow()
     // set screen size
     setTitle("THE3DENGINE");
     resize(800, 600);
-
-
 }
 
 OpenGLWindow::~OpenGLWindow() {
-    // engine.terminate();
+    // Terminate the engine
+    engine.terminate();
+    engineThread.join();
 }
 
-void OpenGLWindow::initializeGL() {
-
+void OpenGLWindow::initializeGL() 
+{
     // Check context
     if (!QOpenGLContext::currentContext()) {
         std::cerr << "Failed to get OpenGL context" << std::endl;
         return;
     }
+
+    engine.setSwapBuffersCallback([this]() {
+        this->context()->swapBuffers(this);
+    });
 
     // Initialiser GLAD
     if (!initGlad()) {
@@ -29,13 +33,11 @@ void OpenGLWindow::initializeGL() {
 
     // Initialiser le moteur
     engine.init();
-}
 
-void OpenGLWindow::paintGL() 
-{
-    engine.update();
-    engine.draw();
-    update();
+    // Lancer la boucle du moteur dans un thread séparé
+    engineThread = std::thread([&]() {
+        engine.run(); // Boucle du moteur
+    });
 }
 
 bool OpenGLWindow::initGlad() 

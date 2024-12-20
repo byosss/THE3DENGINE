@@ -6,7 +6,7 @@ class TimeManager {
 public:
     TimeManager();
 
-    void update();
+    void tick();
     
     float getDeltaTime() const;
     float getElapsedTime() const;

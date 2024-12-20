@@ -10,7 +10,7 @@ float deltaTime_test1() {
 
 float deltaTime_test2() {
     TimeManager timeManager;
-    timeManager.update();
+    timeManager.tick();
     return timeManager.getDeltaTime();
 }
 
@@ -21,7 +21,7 @@ float elapsedTime_test1() {
 
 float elapsedTime_test2() {
     TimeManager timeManager;
-    timeManager.update();
+    timeManager.tick();
     return timeManager.getElapsedTime();
 }
 

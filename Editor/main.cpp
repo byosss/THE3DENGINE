@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QTimer>
 #include "OpenGLWindow.h"
 
 int main(int argc, char *argv[])
