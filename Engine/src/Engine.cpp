@@ -2,13 +2,23 @@
 
 Engine::Engine() : Time(TimeManager()) 
 {
-    // Initialize the engine
-    // ---------------------
-
+    // Constructor
+    // -----------
+    m_swapBuffersCallback = nullptr;
+    m_pollEventsCallback = nullptr;
+    m_windowShouldCloseCallback = nullptr;
 }
 
-void Engine::init() 
+void Engine::init(GLADloadproc gladLoadProc)
 {
+    // Load OpenGL function pointers
+    // -----------------------------
+    if (!gladLoadGLLoader( gladLoadProc )) 
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return;
+    }
+
     // Print OpenGL version
     // --------------------
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -26,15 +36,13 @@ void Engine::run()
         return;
     }
 
-    m_isRunning = true;
-
     // Run the engine
     // --------------
-    while (m_isRunning) 
+    while (!m_windowShouldCloseCallback()) 
     {
         Time.tick();
 
-        //Event.pollEvents();
+        m_pollEventsCallback();
 
         update();
         
@@ -48,24 +56,34 @@ void Engine::terminate()
 {
     // Terminate the engine
     // --------------------
-    m_isRunning = false;
 }
 
 void Engine::update() 
 {
     // Update the engine
     // -----------------
+    std::cout << "Fps: " << 60 / Time.getDeltaTime() << std::endl;
 }
 
 void Engine::draw() 
 {
     // Draw the next frame
     // -------------------
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Engine::setSwapBuffersCallback(std::function<void()> callback) 
 {
     m_swapBuffersCallback = callback;
+}
+
+void Engine::setPollEventsCallback(std::function<void()> callback) 
+{
+    m_pollEventsCallback = callback;
+}
+
+void Engine::setWindowShouldCloseCallback(std::function<int()> callback) 
+{
+    m_windowShouldCloseCallback = callback;
 }

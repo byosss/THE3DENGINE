@@ -12,11 +12,13 @@ class Engine {
 public:
     Engine();
 
-    void init();
+    void init( GLADloadproc gladLoadProc );
     void run();
     void terminate();
 
     void setSwapBuffersCallback(std::function<void()> callback);
+    void setPollEventsCallback(std::function<void()> callback);
+    void setWindowShouldCloseCallback(std::function<int()> callback);
 
 private:
     void update();
@@ -25,6 +27,7 @@ private:
     TimeManager Time;
     // EventManager Event;
 
-    bool m_isRunning = false;
     std::function<void()> m_swapBuffersCallback;
+    std::function<void()> m_pollEventsCallback;
+    std::function<int()> m_windowShouldCloseCallback;
 };

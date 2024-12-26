@@ -2,15 +2,18 @@
 
 OpenGLWindow::OpenGLWindow() 
 {
-    // set screen size
     setTitle("THE3DENGINE");
     resize(800, 600);
+
+    // Set timer
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, QOverload<>::of(&OpenGLWindow::update));
+    timer->start(0);
 }
 
-OpenGLWindow::~OpenGLWindow() {
-    // Terminate the engine
+OpenGLWindow::~OpenGLWindow() 
+{
     engine.terminate();
-    engineThread.join();
 }
 
 void OpenGLWindow::initializeGL() 
@@ -21,10 +24,6 @@ void OpenGLWindow::initializeGL()
         return;
     }
 
-    engine.setSwapBuffersCallback([this]() {
-        this->context()->swapBuffers(this);
-    });
-
     // Initialiser GLAD
     if (!initGlad()) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
@@ -33,11 +32,18 @@ void OpenGLWindow::initializeGL()
 
     // Initialiser le moteur
     engine.init();
+}
 
-    // Lancer la boucle du moteur dans un thread séparé
-    engineThread = std::thread([&]() {
-        engine.run(); // Boucle du moteur
-    });
+void OpenGLWindow::paintGL() 
+{
+    engine.update();
+    engine.draw();
+}
+
+void OpenGLWindow::resizeGL(int w, int h) 
+{
+    // Resize the viewport
+    glViewport(0, 0, w, h);
 }
 
 bool OpenGLWindow::initGlad() 

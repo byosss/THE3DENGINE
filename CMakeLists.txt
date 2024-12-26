@@ -20,4 +20,4 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # Bibliothèque stat
 
 # Add subdirectories
 add_subdirectory(Engine)
-add_subdirectory(Editor)
+add_subdirectory(GameApp)
