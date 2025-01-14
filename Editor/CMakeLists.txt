@@ -1,18 +1,15 @@
-project(Editor)
+project("Editor")
 
-# set(CMAKE_AUTOUIC ON)
-# set(CMAKE_AUTOMOC ON)
-# set(CMAKE_AUTORCC ON)
+# add files from the source directory
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE HEADERS "src/*.h")
 
-find_package(Qt6 REQUIRED Widgets OpenGL)
+# add the executable
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-set(PROJECT_SOURCES
-        main.cpp
-        OpenGLWindow.h
-        OpenGLWindow.cpp
-)
+# link the libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui)
 
-add_executable(Editor ${PROJECT_SOURCES})
-
-target_link_libraries(Editor PRIVATE Engine)
-target_link_libraries(Editor PRIVATE Qt6::Widgets Qt6::OpenGL)
+# link the engine
+target_link_libraries(${PROJECT_NAME} PRIVATE Engine)

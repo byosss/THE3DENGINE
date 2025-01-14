@@ -1,16 +1,12 @@
-project(Engine)
+project("Engine")
 
-# Configuration globale
-file(GLOB_RECURSE ENGINE_SOURCES src/*.cpp)
-file(GLOB_RECURSE ENGINE_HEADERS inc/*.h)
+# add files from the source directory
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE HEADERS "src/*.h")
 
-# glad library
-list(APPEND ENGINE_SOURCES vendor/glad/glad.c)
+# add the executable
+add_library(${PROJECT_NAME} ${SOURCES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# Engine library
-add_library(Engine SHARED ${ENGINE_SOURCES} ${ENGINE_HEADERS})
-target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
-target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
-
-# add test subdirectory
-add_subdirectory(test)
+# link the libraries
+target_link_libraries(${PROJECT_NAME} PUBLIC glad glfw)

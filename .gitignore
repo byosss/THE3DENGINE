@@ -2,7 +2,7 @@
 *.tmp
 
 # Ignorer le dossier de vscode
-/.vscode/
+.vscode/
 
 # Ignorer les fichiers de configuration locaux
 .env
