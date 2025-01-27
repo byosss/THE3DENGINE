@@ -6,11 +6,10 @@
 #include "Input/Key.h"
 
 class InputManager {
-    friend class Application;
-    friend class Window;
-
 public:
     static InputManager& getInstance();
+
+    void update();
 
     bool isKeyPressed(int key) const;
     bool isKeyReleased(int key) const;
@@ -22,9 +21,11 @@ public:
     std::pair<double, double> getMousePosition() const;
     std::pair<double, double> getMouseDelta() const;
 
-private:
-    void update();
+    void setKey(int key, int action);
+    void setMouseButton(int button, int action);
+    void setMousePosition(double x, double y);
 
+private:
     InputManager();
     ~InputManager() = default;
 

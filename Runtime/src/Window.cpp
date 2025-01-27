@@ -1,17 +1,12 @@
 #include "Window.h"
 
-#include <iostream>
-
-#include "Event/EventManager.h"
 #include "Input/InputManager.h"
+#include "Event/EventManager.h"
+
 
 Window::Window(int width, int height, const std::string& title) : m_Width(width), 
                                                                   m_Height(height), 
                                                                   m_Title(title)
-{
-}
-
-void Window::init()
 {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -35,29 +30,33 @@ void Window::init()
 
     // Event callbacks
     glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        InputManager::getInstance().setKey(key, action);
         EventManager::getInstance().addEvent<KeyEvent>(key, action);
-        InputManager::getInstance().m_keys[key] = action;
     });
 
     glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+        InputManager::getInstance().setMouseButton(button, action);
         EventManager::getInstance().addEvent<MouseButtonEvent>(button, action);
-        InputManager::getInstance().m_mouseButtons[button] = action;
     });
 
     glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos) {
+        InputManager::getInstance().setMousePosition(xpos, ypos);
         EventManager::getInstance().addEvent<MouseMoveEvent>(xpos, ypos);
-        InputManager::getInstance().m_mousePosition = {xpos, ypos};
     });
 
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
         EventManager::getInstance().addEvent<WindowResizeEvent>(width, height);
     });
 
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+        EventManager::getInstance().addEvent<WindowCloseEvent>();
+    });
+
     // VSync
     this->setVSync(false);
 }
 
-void Window::terminate()
+Window::~Window()
 {
     if (m_Window) {
         glfwDestroyWindow(m_Window);
@@ -82,14 +81,14 @@ void Window::setVSync(bool enabled) {
     glfwSwapInterval(enabled ? 1 : 0);
 }
 
-GLFWwindow* Window::getHandle() const {
-    return m_Window;
-}
-
-void Window::setDisabledCursor(bool enabled) {
+void Window::disableCursor(bool enabled) {
     if (enabled) {
         glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     } else {
         glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+}
+
+GLFWwindow* Window::getHandle() const {
+    return m_Window;
 }

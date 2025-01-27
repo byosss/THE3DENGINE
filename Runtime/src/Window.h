@@ -1,21 +1,21 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include <iostream>
 #include <string>
+
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 class Window {
 public:
     Window(int width, int height, const std::string& title);
-
-    void init();
-    void terminate();
+    ~Window();
 
     void pollEvents();
     void swapBuffers();
     bool shouldClose() const;
     void setVSync(bool enabled);
-    void setDisabledCursor(bool enabled);
-
+    void disableCursor(bool enabled);
 
     GLFWwindow* getHandle() const;
 

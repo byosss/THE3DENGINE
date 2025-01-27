@@ -45,6 +45,7 @@ double TimeManager::getElapsedTime() const {
     return Duration(Clock::now() - m_startTime).count();
 }
 
+#include <cmath>
 int TimeManager::getFPS() const {
     return static_cast<int>(std::round(1.0 / m_deltaTime.count()));
 }

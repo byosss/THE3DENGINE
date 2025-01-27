@@ -2,12 +2,12 @@
 
 #include <chrono>
 #include <thread>
-#include <cmath>
 
 class TimeManager {
-    friend class Application;
 public:
     static TimeManager& getInstance();
+
+    void tick();
 
     void setTargetFPS(double fps);
     double getDeltaTime() const;
@@ -21,8 +21,6 @@ private:
     TimeManager& operator=(const TimeManager&) = delete;
     TimeManager(TimeManager&&) = delete;
     TimeManager& operator=(TimeManager&&) = delete;
-
-    void tick();
 
     using Clock = std::chrono::steady_clock;
     using TimePoint = Clock::time_point;

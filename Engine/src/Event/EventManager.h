@@ -10,10 +10,10 @@
 #include "Event.h"
 
 class EventManager {
-    friend class Application;
-
 public:
     static EventManager& getInstance();
+
+    void dispatchEvents();
 
     template<typename EventType>
     using EventCallback = std::function<void(const EventType&)>;
@@ -38,8 +38,6 @@ public:
     }
 
 private:
-    void dispatchEvents();
-
     EventManager() = default;
     ~EventManager() = default;
 

@@ -55,3 +55,14 @@ std::pair<double, double> InputManager::getMouseDelta() const {
     return m_mouseDelta;
 }
 
+void InputManager::setKey(int key, int action) {
+    m_keys[key] = action;
+}
+
+void InputManager::setMouseButton(int button, int action) {
+    m_mouseButtons[button] = action;
+}
+
+void InputManager::setMousePosition(double x, double y) {
+    m_mousePosition = {x, y};
+}
