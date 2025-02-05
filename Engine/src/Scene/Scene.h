@@ -1,6 +1,6 @@
 #pragma once
 
-// #include <entt/entt.hpp>
+#include <entt/entity/registry.hpp>
 
 class Scene {
 public:
@@ -11,5 +11,6 @@ public:
     // void _update();
     // void _fixedUpdate();
 
-    // entt::registry registry;
+private:
+    entt::registry m_registry;
 };

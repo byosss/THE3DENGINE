@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project("THE3DENGINE" LANGUAGES CXX)
 
@@ -15,6 +15,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 add_subdirectory(external/glad)
 add_subdirectory(external/glfw)
 add_subdirectory(external/imgui)
+add_subdirectory(external/entt)
+add_subdirectory(external/lua)
 
 # Add subdirectories
 add_subdirectory(Engine)
