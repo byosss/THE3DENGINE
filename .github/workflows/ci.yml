@@ -17,11 +17,11 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - name: Installer les dépendances de développement Wayland
+    - name: Installer les dépendances X11 et Wayland
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libwayland-bin libwayland-dev libxkbcommon-dev
+        sudo apt-get install -y xorg-dev libwayland-bin libwayland-dev libxkbcommon-dev
 
     - name: Checkout code
       uses: actions/checkout@v3
