@@ -6,6 +6,7 @@ file(GLOB_RECURSE HEADERS "src/*.h")
 
 # add the shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+set_target_properties(Engine PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # link the libraries
