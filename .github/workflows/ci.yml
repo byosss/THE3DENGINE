@@ -17,6 +17,12 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
+    - name: Installer libwayland-bin
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libwayland-bin
+
     - name: Checkout code
       uses: actions/checkout@v3
 
