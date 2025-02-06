@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Scene/Scene.h"
+namespace Physics {
 
-class Physics {
-public:
-    Physics() = default;
-    ~Physics() = default;
+    // update the position of all entities based on the applied forces
+    void update_position();
 
-    void simulate( const Scene& scene ) {
-        // Simulate physics
-    }
-};
+    // check for collisions between entities
+    void check_collisions();
+
+    // resolve collisions between entities
+    void resolve_collisions();
+    
+}

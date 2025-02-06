@@ -1,16 +1,15 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <iostream>
 
-#include "Scene/Scene.h"
+#include <glad/glad.h>
 
-class Renderer {
-public:
-    Renderer() = default;
+namespace Renderer {
 
-    void draw( const Scene& scene );
-    void shutdown();
-
+    // set the window context
     void setWindowContext( GLADloadproc loadproc );
-};
+
+    // Clear the screen
+    void clear();
+
+}

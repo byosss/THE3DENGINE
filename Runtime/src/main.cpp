@@ -14,18 +14,13 @@ int main() {
 
     Window window(1280, 720, "Runtime");
 
+    Renderer::setWindowContext( (GLADloadproc)glfwGetProcAddress );
+
     auto& Time = TimeManager::getInstance();
     auto& Input = InputManager::getInstance();
     auto& Event = EventManager::getInstance();
 
     Scene scene;
-
-    Physics physics;
-
-    Renderer renderer;
-    renderer.setWindowContext( (GLADloadproc)glfwGetProcAddress );
-
-    // scene._start();
 
     while ( !window.shouldClose() ) {
 
@@ -37,17 +32,17 @@ int main() {
 
         Event.dispatchEvents();
 
+        scene.update();
+
         // while (Time.fixedTimeStep()) {
 
-        //     scene._fixedUpdate();
+        //     scene.simulate();
+
+        //     Time.fixedTimeStepEnd();
 
         // }
 
-        // scene._update();
-
-        physics.simulate( scene );
-
-        renderer.draw( scene );
+        scene.draw();
 
         window.swapBuffers();
     }
