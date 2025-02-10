@@ -4,6 +4,8 @@
 
 #include <glad/glad.h>
 
+#include <entt/entity/registry.hpp>
+
 namespace Renderer {
 
     // set the window context
