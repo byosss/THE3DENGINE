@@ -17,9 +17,6 @@ struct EntityData {
 
 class Scene {
 public:
-    Scene() = default;
-    ~Scene() = default;
-
     void load();     // Load the scene 
 
     void setup();    // Setup the scene
