@@ -31,6 +31,17 @@ void TimeManager::tick()
     // Calculate delta time
     m_deltaTime = currentTime - m_lastTime;
     m_lastTime = currentTime;
+    m_accumulator += m_deltaTime;
+}
+
+bool TimeManager::fixedTimeStep()
+{
+    return m_accumulator >= m_fixedTimeStep;
+}
+
+void TimeManager::fixedTimeStepEnd()
+{
+    m_accumulator -= m_fixedTimeStep;
 }
 
 void TimeManager::setTargetFPS(double fps) {
@@ -49,3 +60,4 @@ double TimeManager::getElapsedTime() const {
 int TimeManager::getFPS() const {
     return static_cast<int>(std::round(1.0 / m_deltaTime.count()));
 }
+

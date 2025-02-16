@@ -10,6 +10,8 @@
 #include "Input/InputManager.h"
 #include "Event/EventManager.h"
 
+#include "Log/Logger.h"
+
 int main() {
 
     Window window(1280, 720, "Runtime");
@@ -19,6 +21,8 @@ int main() {
     auto& Time = TimeManager::getInstance();
     auto& Input = InputManager::getInstance();
     auto& Event = EventManager::getInstance();
+
+    auto& log = Logger::getInstance();
 
     Scene scene;
 
@@ -34,17 +38,19 @@ int main() {
 
         scene.update();
 
-        // while (Time.fixedTimeStep()) {
+        while (Time.fixedTimeStep()) {
 
-        //     scene.simulate();
+            scene.simulate();
 
-        //     Time.fixedTimeStepEnd();
+            Time.fixedTimeStepEnd();
 
-        // }
+        }
 
         scene.draw();
 
         window.swapBuffers();
+
+        log.flush();
     }
 
     return 0;
