@@ -1,34 +1,27 @@
 #pragma once
 
-#include <string>
 #include <vector>
 
-#include "Texture.h"
+#include "Resource.h"
+#include "Material.h"
 
 struct Vertex {
     float px, py, pz; // Position
-    float nx, ny, nz; // Normal
     float tx, ty;     // Texture coordinates
 };
 
-struct Material {
-    float albedo[3];
-    float metallic;
-    float roughness;
-    float ao;
-
-    // std::shared_ptr<Texture> albedoMap;
-    // std::shared_ptr<Texture> metallicMap;
-    // std::shared_ptr<Texture> roughnessMap;
-    // std::shared_ptr<Texture> aoMap;
-    // std::shared_ptr<Texture> normalMap;
-};
-
-class Mesh
-{
+class Mesh {
 public:
-    Mesh( std::vector<Vertex> vertices, std::vector<unsigned int> indices );
-    ~Mesh();
+    Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Material& material) {
+        // Generate vertex array object
+    }
+    ~Mesh() {
+        // Delete vertex array object
+    }
 
-    unsigned int id;
+    unsigned int vao;
+    unsigned int vbo;
+    unsigned int ebo;
+
+    Material material;
 };

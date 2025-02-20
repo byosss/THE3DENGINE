@@ -1,12 +1,20 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 
-class Texture
-{
-public:
-    Texture( const std::string& filename );
-    ~Texture();
+#include "Resource.h"
 
-    unsigned int id;
+class Texture : public Resource {
+public:
+    explicit Texture(const std::string& path) {
+        std::cout << "Chargement de la texture : " << path << std::endl;
+    }
+    ~Texture() {
+        std::cout << "Destruction de la texture" << std::endl;
+    }
+
+private:
+    // Texture data
+    int id;
 };

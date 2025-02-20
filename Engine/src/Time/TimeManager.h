@@ -19,6 +19,7 @@ public:
 
 private:
     TimeManager();
+    ~TimeManager() = default;
 
     TimeManager(const TimeManager&) = delete;
     TimeManager& operator=(const TimeManager&) = delete;
