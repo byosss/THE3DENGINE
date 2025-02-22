@@ -10,4 +10,8 @@ set_target_properties(Engine PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # link the libraries
-target_link_libraries(${PROJECT_NAME} PUBLIC glad glfw EnTT::EnTT lua)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PUBLIC EnTT::EnTT)
+target_link_libraries(${PROJECT_NAME} PRIVATE lua)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp -static-libgcc -static-libstdc++)
