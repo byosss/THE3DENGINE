@@ -1,10 +1,5 @@
 #include "InputManager.h"
 
-InputManager& InputManager::getInstance() {
-    static InputManager instance;
-    return instance;
-}
-
 InputManager::InputManager() {
     for (auto& key : m_keys) {
         key = false;

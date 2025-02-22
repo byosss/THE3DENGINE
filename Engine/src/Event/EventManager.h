@@ -11,7 +11,8 @@
 
 class EventManager {
 public:
-    static EventManager& getInstance();
+    EventManager() = default;
+    ~EventManager() = default;
 
     void dispatchEvents();
 
@@ -38,14 +39,6 @@ public:
     }
 
 private:
-    EventManager() = default;
-    ~EventManager() = default;
-
-    EventManager(const EventManager&) = delete;
-    EventManager& operator=(const EventManager&) = delete;
-    EventManager(EventManager&&) = delete;
-    EventManager& operator=(EventManager&&) = delete;
-
     std::vector<std::unique_ptr<Event>> m_events;
     std::unordered_map<std::type_index, std::vector<std::function<void(const Event&)>>> m_listeners;
 };

@@ -2,12 +2,12 @@
 
 #include <array>
 
-#include "Event/EventManager.h"
 #include "Input/Key.h"
 
 class InputManager {
 public:
-    static InputManager& getInstance();
+    InputManager();
+    ~InputManager() = default;
 
     void update();
 
@@ -26,14 +26,6 @@ public:
     void setMousePosition(double x, double y);
 
 private:
-    InputManager();
-    ~InputManager() = default;
-
-    InputManager(const InputManager&) = delete;
-    InputManager& operator=(const InputManager&) = delete;
-    InputManager(InputManager&&) = delete;
-    InputManager& operator=(InputManager&&) = delete;
-
     std::array<int, KEY::LAST> m_keys;
     std::array<int, MOUSE::LAST> m_mouseButtons;
     std::pair<double, double> m_mousePosition;

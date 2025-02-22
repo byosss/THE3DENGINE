@@ -5,7 +5,8 @@
 
 class TimeManager {
 public:
-    static TimeManager& getInstance();
+    TimeManager();
+    ~TimeManager() = default;
 
     void tick();
 
@@ -18,14 +19,6 @@ public:
     int getFPS() const;
 
 private:
-    TimeManager();
-    ~TimeManager() = default;
-
-    TimeManager(const TimeManager&) = delete;
-    TimeManager& operator=(const TimeManager&) = delete;
-    TimeManager(TimeManager&&) = delete;
-    TimeManager& operator=(TimeManager&&) = delete;
-
     using Clock = std::chrono::steady_clock;
     using TimePoint = Clock::time_point;
     using Duration = std::chrono::duration<double>;

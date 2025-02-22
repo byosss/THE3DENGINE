@@ -1,11 +1,5 @@
 #include "TimeManager.h"
 
-TimeManager& TimeManager::getInstance()
-{
-    static TimeManager instance;
-    return instance;
-}
-
 TimeManager::TimeManager() : m_startTime(Clock::now()), 
                              m_lastTime(Clock::now()),
                              m_deltaTime(Duration(0.0)),

@@ -17,7 +17,6 @@
 - **GLAD**: For OpenGL loading.
 - **EnTT**: For entity-component-system.
 - **Lua**: For scripting.
-- **ImGui**: For the editor interface.
 
 ## Building
 
