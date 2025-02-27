@@ -7,6 +7,7 @@
 
 struct Vertex {
     float px, py, pz; // Position
+    float nx, ny, nz; // Normal
     float tx, ty;     // Texture coordinates
 };
 
@@ -18,10 +19,6 @@ public:
     ~Mesh() {
         // Delete vertex array object
     }
-
-    unsigned int vao;
-    unsigned int vbo;
-    unsigned int ebo;
 
     Material material;
 };

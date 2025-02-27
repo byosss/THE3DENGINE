@@ -10,8 +10,11 @@ App::App() : Time(),
     // Initialize the application
     // --------------------------
 
+    Window.setVSync( false );
+
     // Initialize the window context
-    RenderSystem::init( Window );
+    Renderer = Renderer::Create( API::OpenGL );
+    Renderer->init( Window.getHandle() );
 
     // Add a listener for the WindowCloseEvent
     Event.addListener<WindowCloseEvent>( [this]( const WindowCloseEvent& event ) {
@@ -26,6 +29,7 @@ App::~App()
 {
     // Shutdown the application
     // -------------------------
+    Renderer->shutdown();
 }
 
 void App::run()
@@ -63,7 +67,7 @@ void App::run()
         }
 
         // Render
-        RenderSystem::draw( Scene.getRegistry() );
+        Renderer->draw( Scene );
 
         // Swap Buffers
         Window.swapBuffers();

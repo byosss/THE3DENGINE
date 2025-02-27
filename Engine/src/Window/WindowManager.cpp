@@ -19,8 +19,11 @@ WindowManager::WindowManager(EventManager& Event, InputManager& Input) : m_Event
         glfwTerminate();
         return;
     }
-    m_Width = 800;
-    m_Height = 600;
+
+    m_Handle.handle = m_Window;
+    m_Handle.procAddress = reinterpret_cast<void*>(glfwGetProcAddress);
+    m_Handle.width = 800;
+    m_Handle.height = 600;
 
     glfwMakeContextCurrent(m_Window);
 
@@ -54,8 +57,8 @@ WindowManager::WindowManager(EventManager& Event, InputManager& Input) : m_Event
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
         auto* wm = static_cast<WindowManager*>(glfwGetWindowUserPointer(window));
         if (wm) {
-            wm->m_Width = width;
-            wm->m_Height = height;
+            wm->m_Handle.width = width;
+            wm->m_Handle.height = height;
             wm->m_Event.addEvent<WindowResizeEvent>(width, height);
         }
     });
@@ -102,17 +105,13 @@ void WindowManager::disableCursor(bool enabled) {
 }
 
 int WindowManager::getWidth() const {
-    return m_Width;
+    return m_Handle.width;
 }
 
 int WindowManager::getHeight() const {
-    return m_Height;
+    return m_Handle.height;
 }
 
-GLFWwindow* WindowManager::getHandle() const {
-    return m_Window;
-}
-
-void* WindowManager::getProcAddress() {
-    return reinterpret_cast<void*>(glfwGetProcAddress);
+const WindowHandle& WindowManager::getHandle() const {
+    return m_Handle;
 }

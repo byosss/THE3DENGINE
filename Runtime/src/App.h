@@ -4,7 +4,7 @@
 
 #include "Scene/SceneManager.h"
 #include "Physic/PhysicSystem.h"
-#include "Render/RenderSystem.h"
+#include "Renderer/Renderer.h"
 
 #include "Time/TimeManager.h"
 #include "Input/InputManager.h"
@@ -23,7 +23,7 @@ private:
 
     SceneManager Scene;
     // PhysicSystem Physic;
-    // RenderSystem Render;
+    std::unique_ptr<IRenderer> Renderer;
 
     TimeManager Time;
     InputManager Input;

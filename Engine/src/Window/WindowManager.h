@@ -9,6 +9,8 @@
 #include "Event/EventManager.h"
 #include "Input/InputManager.h"
 
+#include "WindowHandle.h"
+
 class WindowManager {
 public:
     WindowManager( EventManager& Event, InputManager& Input );
@@ -23,12 +25,12 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-    GLFWwindow* getHandle() const;
-    void* getProcAddress();
+    const WindowHandle& getHandle() const;
 
 private:
     GLFWwindow* m_Window;
-    int m_Width, m_Height;
+
+    WindowHandle m_Handle;
 
     EventManager& m_Event;
     InputManager& m_Input;

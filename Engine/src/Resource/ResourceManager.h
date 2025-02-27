@@ -1,74 +1,53 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <unordered_map>
+#include <memory>
 
-#include "Resource.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "Model.h"
+#include "Resources/Resource.h"
+#include "Resources/Texture.h"
+#include "Resources/Shader.h"
+#include "Resources/Model.h"
 
 class ResourceManager {
 public:
-    static ResourceManager& getInstance() {
-        static ResourceManager instance;
-        return instance;
-    }
-
-    // Fonction générique pour charger toutes les ressources, sans avoir à fournir d'ID
-    template <typename T, typename... Args>
-    std::shared_ptr<T> load(Args&&... args) {
-        // Utilise les arguments pour générer une clé unique (ici basée sur le chemin)
-        std::string key = generateKey(std::forward<Args>(args)...);
-
-        // Vérifie si la ressource a déjà été chargée
-        if (resources.find(key) != resources.end()) {
-            return std::static_pointer_cast<T>(resources[key]);
-        }
-
-        // Crée la ressource, l'ajoute au gestionnaire et retourne le pointeur partagé
-        std::shared_ptr<T> resource = std::make_shared<T>(std::forward<Args>(args)...);
-        resources[key] = resource;
-        return resource;
-    }
-
-    // Fonction pour netttoyer une ressource spécifique
-    void clear(const std::string& key) {
-        resources.erase(key);
-    }
-
-    // Méthode pour nettoyer toutes les ressources
-    void clearAll() {
-        resources.clear();
-    }
-
-private:
     ResourceManager() = default;
     ~ResourceManager() = default;
 
-    ResourceManager(const ResourceManager&) = delete;
-    ResourceManager& operator=(const ResourceManager&) = delete;
-    ResourceManager(ResourceManager&&) = delete;
-    ResourceManager& operator=(ResourceManager&&) = delete;
+    template<typename T>
+    std::shared_ptr<T> load(const std::string& path) {
 
-    // Map pour stocker toutes les ressources, utilisant une clé unique par ressource
-    std::unordered_map<std::string, std::shared_ptr<Resource>> resources;
+        // Trouver le chemin absolu de la ressource
+        // todo...
 
-    // Générateur de clé unique basé sur les arguments (path de fichiers ou autres)
-    template <typename... Args>
-    std::string generateKey(Args&&... args) {
-        // Pour simplifier, on génère une clé unique à partir du premier argument (le chemin de fichier)
-        return generateKeyFromArgs(std::forward<Args>(args)...);
+        // Vérifier si la ressource est déjà chargée
+        auto it = m_resources.find(path);
+        if (it != m_resources.end()) {
+            return std::static_pointer_cast<T>(it->second);
+        }
+
+        // Charger la ressource depuis le stockage
+        auto resource = std::make_shared<T>();
+        if (!resource->load(path)) {
+            return nullptr;
+        }
+
+        // Stocker la ressource dans le cache
+        m_resources[path] = resource;
+        return resource;
     }
 
-    // Génération de clé à partir d'un seul argument (par exemple un chemin de fichier)
-    std::string generateKeyFromArgs(const std::string& arg) {
-        return arg;
+    void unload(const std::string& path) {
+        auto it = m_resources.find(path);
+        if (it != m_resources.end()) {
+            m_resources.erase(it);
+        }
     }
 
-    // Si on veut générer une clé à partir de plusieurs arguments (par exemple pour les shaders)
-    std::string generateKeyFromArgs(const std::string& vertexPath, const std::string& fragmentPath) {
-        return vertexPath + "|" + fragmentPath;
+    void unloadAll() {
+        m_resources.clear();
     }
+
+private:
+    std::unordered_map<std::string, std::shared_ptr<Resource>> m_resources;
 };
