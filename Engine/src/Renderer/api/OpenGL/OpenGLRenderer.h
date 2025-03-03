@@ -6,8 +6,8 @@
 
 #include "Renderer/IRenderer.h"
 
-#include "Scene/Components/Transform.h"
-#include "Renderer/Components/MeshRenderer.h"
+// #include "Scene/Components/Transform.h"
+// #include "Renderer/Components/MeshRenderer.h"
 
 class OpenglRenderer : public IRenderer {
 public:
