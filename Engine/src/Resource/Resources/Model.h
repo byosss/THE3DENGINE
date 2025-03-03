@@ -14,13 +14,12 @@ public:
         // ...
     }
 
-    bool load(const std::string& path) override {
+    void load(const std::string& filePath) override {
         // Load model from file
         // ...
-        return true;
     }
-
 
 private:
     std::vector<Mesh> m_meshes;
+    std::vector<Material> m_materials;
 };

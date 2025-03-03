@@ -1,17 +1,21 @@
 #pragma once
 
-#include "Renderer/IRenderer.h"
+#include <iostream>
 
 #include <glad/glad.h>
 
-class OpenGLRenderer : public IRenderer
-{
-public:
-    virtual void init( const WindowHandle& windowHandle ) override
-    {
-        // std::cout << "OpenGLRenderer::init()" << std::endl;
-        // //-------------------------------------------------
+#include "Renderer/IRenderer.h"
 
+#include "Scene/Components/Transform.h"
+#include "Renderer/Components/MeshRenderer.h"
+
+class OpenglRenderer : public IRenderer {
+public:
+    OpenglRenderer() = default;
+    ~OpenglRenderer() override = default;
+
+    void init( const WindowHandle& windowHandle ) override 
+    {
         // Load OpenGL functions
         if (!gladLoadGLLoader((GLADloadproc)windowHandle.procAddress))
         {
@@ -19,21 +23,22 @@ public:
         }
     }
 
-    virtual void draw( SceneManager& scene ) override
+    void draw( const SceneManager& scene ) override 
     {
-        // std::cout << "OpenGLRenderer::draw()" << std::endl;
-        // //-------------------------------------------------
-
         // Clear the screen
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+        // // Draw the scene
+        // scene.getRegistry().view<Transform, MeshRenderer>().each([](auto entity, Transform& transform, MeshRenderer& mesh) 
+        // {
+
+        // });
     }
 
-    virtual void shutdown() override
+    void terminate() override 
     {
-        // std::cout << "OpenGLRenderer::shutdown()" << std::endl;
-        // //-----------------------------------------------------
-    }
 
+    }
 };

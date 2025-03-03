@@ -6,5 +6,5 @@ class Resource {
 public:
     virtual ~Resource() = 0;
 
-    virtual bool load(const std::string& path) = 0;
+    virtual void load(const std::string& filePath) = 0;
 };

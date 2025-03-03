@@ -1,6 +1,6 @@
 #pragma once
 
-struct TransformComponent
+struct Transform
 {
     float px, py, pz;
     float rx, ry, rz;

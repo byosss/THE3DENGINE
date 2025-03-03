@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 
-#include "Components/TransformComponent.h"
+#include "Components/Transform.h"
 
 void SceneManager::load() 
 {
@@ -8,7 +8,7 @@ void SceneManager::load()
     auto camera = createEntity();
 
     // Add a transform component to the camera entity
-    TransformComponent cameraTransform;
+    Transform cameraTransform;
     cameraTransform.px = 0.0f;
     cameraTransform.py = 0.0f;
     cameraTransform.pz = 0.0f;
@@ -20,7 +20,7 @@ void SceneManager::load()
     cameraTransform.sz = 1.0f;
 
     // Add the transform component to the camera entity
-    m_registry.emplace<TransformComponent>( camera, cameraTransform );
+    m_registry.emplace<Transform>( camera, cameraTransform );
 }
 
 void SceneManager::setup( TimeManager& Time, EventManager& Event, InputManager& Input ) {

@@ -13,7 +13,7 @@ App::App() : Time(),
     Window.setVSync( false );
 
     // Initialize the window context
-    Renderer = Renderer::Create( API::OpenGL );
+    Renderer = Renderer::createRenderer( Api::OPENGL );
     Renderer->init( Window.getHandle() );
 
     // Add a listener for the WindowCloseEvent
@@ -29,7 +29,7 @@ App::~App()
 {
     // Shutdown the application
     // -------------------------
-    Renderer->shutdown();
+    Renderer->terminate();
 }
 
 void App::run()

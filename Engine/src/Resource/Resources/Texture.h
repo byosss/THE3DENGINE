@@ -6,12 +6,13 @@
 
 class Texture : public Resource {
 public:
-    explicit Texture(const std::string& path) {
-        // Load texture from file
-        // ...
-    }
     ~Texture() {
         // Release texture data
+        // ...
+    }
+
+    void load(const std::string& filePath) override {
+        // Load texture from file
         // ...
     }
 

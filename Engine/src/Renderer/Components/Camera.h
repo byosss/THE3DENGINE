@@ -1,6 +1,6 @@
 #pragma once
 
-struct CameraComponent
+struct Camera
 {
     enum class ProjectionType {
         Perspective,
