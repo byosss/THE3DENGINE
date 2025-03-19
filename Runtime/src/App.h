@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Window/WindowManager.h"
+#include "Window/Window.h"
 
 #include "Scene/SceneManager.h"
 #include "Physic/PhysicSystem.h"
@@ -10,8 +10,7 @@
 #include "Input/InputManager.h"
 #include "Event/EventManager.h"
 
-class App
-{
+class App {
 public:
     App();
     ~App();
@@ -19,15 +18,15 @@ public:
     void run();
 
 private:
-    WindowManager Window;
+    Window Window;
 
     SceneManager Scene;
     // PhysicSystem Physic;
-    std::unique_ptr<IRenderer> Renderer;
+    Renderer Render;
 
     TimeManager Time;
     InputManager Input;
     EventManager Event;
 
-    bool isRunning;
+    bool isRunning = false;
 };

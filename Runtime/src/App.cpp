@@ -1,35 +1,32 @@
 #include "App.h"
 
-App::App() : Time(),
-             Event(),
-             Input(),
-             Scene(),
-             Window( Event, Input ),
-             isRunning( false )
+#include "config.h"
+
+App::App()
 {
-    // Initialize the application
-    // --------------------------
-
-    Window.setVSync( false );
-
-    // Initialize the window context
-    Renderer = Renderer::createRenderer( Api::OPENGL );
-    Renderer->init( Window.getHandle() );
-
     // Add a listener for the WindowCloseEvent
     Event.addListener<WindowCloseEvent>( [this]( const WindowCloseEvent& event ) {
         isRunning = false;
     });
 
+    // Initialize the window
+    Window.createWindow( 800, 600, "wowow" );
+    Window.init( Event, Input );
+
+
+    // Initialize the window context
+    auto renderContext = Window.getRenderContext();
+    Render.init( std::move( renderContext ) );
+
     // Load the scene
-    Scene.load();
+    // load( Scene );
 }
 
 App::~App()
 {
     // Shutdown the application
     // -------------------------
-    Renderer->terminate();
+    Render.terminate();
 }
 
 void App::run()
@@ -67,9 +64,6 @@ void App::run()
         }
 
         // Render
-        Renderer->draw( Scene );
-
-        // Swap Buffers
-        Window.swapBuffers();
+        Render.draw( Scene );
     }
 }

@@ -18,7 +18,6 @@ struct EntityData {
 
 class SceneManager {
 public:
-    void load();                                                 // Load the scene 
     void setup( TimeManager&, EventManager&, InputManager& );    // Setup the scene
     void update( TimeManager&, EventManager&, InputManager& );   // Update game logic
 

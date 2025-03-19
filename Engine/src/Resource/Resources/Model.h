@@ -1,11 +1,14 @@
 #pragma once
 
+#include <vector>
+
 // #include <assimp/Importer.hpp>
 // #include <assimp/scene.h>
 // #include <assimp/postprocess.h>
 
 #include "Resource.h"
 #include "Mesh.h"
+#include "Material.h"
 
 class Model : public Resource {
 public:

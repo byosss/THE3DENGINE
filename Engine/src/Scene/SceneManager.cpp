@@ -2,17 +2,6 @@
 
 #include "Components/Transform.h"
 
-void SceneManager::load() 
-{
-    // Create a camera entity
-    auto camera = createEntity();
-
-    auto body = createEntity( camera );
-    auto head = createEntity( body );
-
-    auto obstacle = createEntity();
-}
-
 void SceneManager::setup( TimeManager& Time, EventManager& Event, InputManager& Input ) {
     // Setup the scene
 }

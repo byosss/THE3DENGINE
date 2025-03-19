@@ -1,41 +1,39 @@
 #include "Renderer/Renderer.h"
 
-Api Renderer::s_Api = Api::OPENGL;
+#include "Renderer/Components/Camera.h"
+#include "Renderer/Components/MeshRenderer.h"
 
-std::unique_ptr<IRenderer> Renderer::createRenderer(Api api)
+#include <iostream>
+
+void Renderer::init( std::unique_ptr<RenderContext> renderContext )
 {
-    s_Api = api;
+    // Initialize the renderer
+    // -----------------------
+    m_renderContext = std::move( renderContext );
 
-    switch (api) {
-        case Api::OPENGL: return std::make_unique<OpenglRenderer>();
-        case Api::VULKAN: return std::make_unique<VulkanRenderer>();
-        default: return nullptr;
-    }
+    if (!gladLoadGLLoader((GLADloadproc)m_renderContext->getProcAddress())) 
+        throw std::runtime_error( "Failed to initialize GLAD" );
+    
 }
 
-std::shared_ptr<IVertexArray> Renderer::createVertexArray() 
+void Renderer::draw( SceneManager& scene )
 {
-    switch (s_Api) {
-        case Api::OPENGL: return std::make_shared<OpenglVertexArray>();
-        // case Api::VULKAN: return std::make_shared<VulkanVertexArray>();
-        default: return nullptr;
-    }
+    // Clear the screen
+    // --------------
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Draw the scene
+    // --------------
+
+
+    // Swap the buffers
+    // ----------------
+    m_renderContext->swapBuffers();
 }
 
-std::shared_ptr<IVertexBuffer> Renderer::createVertexBuffer()
+void Renderer::terminate()
 {
-    switch (s_Api) {
-        case Api::OPENGL: return std::make_shared<OpenglVertexBuffer>();
-        // case Api::VULKAN: return std::make_shared<VulkanVertexBuffer>();
-        default: return nullptr;
-    }
-}
-
-std::shared_ptr<IIndexBuffer> Renderer::createIndexBuffer()
-{
-    switch (s_Api) {
-        case Api::OPENGL: return std::make_shared<OpenglIndexBuffer>();
-        // case Api::VULKAN: return std::make_shared<VulkanIndexBuffer>();
-        default: return nullptr;
-    }
+    // Terminate the renderer
+    // ----------------------
 }

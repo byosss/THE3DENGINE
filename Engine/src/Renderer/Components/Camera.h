@@ -1,29 +1,30 @@
 #pragma once
 
+#include "Renderer/CullingLayerMask.h"
+
 struct Camera
 {
     enum class ProjectionType {
         Perspective,
         Orthographic
-    };
+    } projection = ProjectionType::Perspective;
 
-    ProjectionType type = ProjectionType::Perspective;
+    // enum class clear color/skybox
 
-    float fov = 45.0f;
     float nearClip = 0.1f;
     float farClip = 1000.0f;
 
+    float fov = 45.0f;       // if type == Perspective
     float orthoSize = 10.0f; // if type == Orthographic
 
-    float depth = 0.0f; // priority in rendering (lower is rendered first)
+    int priority = 0;
 
-    // // Matrice de projection
-    // glm::mat4 getProjectionMatrix(float aspectRatio) const {
-    //     if (projection == ProjectionType::Perspective) {
-    //         return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
-    //     } else {
-    //         float halfSize = orthoSize * 0.5f;
-    //         return glm::ortho(-halfSize * aspectRatio, halfSize * aspectRatio, -halfSize, halfSize, nearPlane, farPlane);
-    //     }
-    // }
+    struct Viewport {
+        float x = 0.0f;
+        float y = 0.0f;
+        float width = 1.0f;
+        float height = 1.0f;
+    } viewport;
+
+    CullingLayerMask cullingMask;
 };
