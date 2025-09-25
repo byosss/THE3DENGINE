@@ -1,0 +1,5 @@
+project(Client LANGUAGES CXX)
+
+add_executable(Client src/main.cpp)
+
+target_link_libraries(Client PRIVATE Engine)

@@ -1,23 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.30)
 
-project("THE3DENGINE" LANGUAGES CXX)
+set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 
-# Set the C++ standard to C++20
-set(CMAKE_CXX_STANDARD 20)
+project(THE3DENGINE LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Define output directories
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_CXX_MODULE_STD 1)
 
-# Add external libraries
-add_subdirectory(external/glad)
-add_subdirectory(external/glfw)
-#add_subdirectory(external/assimp)
-add_subdirectory(external/entt)
-add_subdirectory(external/lua)
-
-# Add subdirectories
 add_subdirectory(Engine)
-add_subdirectory(Runtime)
+add_subdirectory(Client)

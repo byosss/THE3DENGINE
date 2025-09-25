@@ -1,17 +1,37 @@
-project("Engine")
+project(Engine LANGUAGES CXX)
 
-# add files from the source directory
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-file(GLOB_RECURSE HEADERS "src/*.h")
+add_library(Engine STATIC)
 
-# add the shared library
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
-set_target_properties(Engine PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_sources(Engine
+    PUBLIC
+    FILE_SET modules TYPE CXX_MODULES FILES
 
-# link the libraries
-target_link_libraries(${PROJECT_NAME} PUBLIC glad)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_link_libraries(${PROJECT_NAME} PUBLIC EnTT::EnTT)
-target_link_libraries(${PROJECT_NAME} PRIVATE lua)
-#target_link_libraries(${PROJECT_NAME} PRIVATE assimp -static-libgcc -static-libstdc++)
+        src/Types.ixx
+#
+#        src/Core/Loop.ixx
+#        src/Core/Context.ixx
+#        src/Core/System.ixx
+#        src/Core/Scheduler.ixx
+#
+#        src/System/Graphics/Graphics.ixx
+#
+#        src/System/Physics/Physics.ixx
+#
+#        src/Service/Time/Time.ixx
+#        src/Service/Time/Clock.cppm
+#        src/Service/Time/Utils.cppm
+#
+#        src/Base/Math/Math.ixx
+#        src/Base/Math/Vector/Vector.cppm
+#        src/Base/Math/Vector/Vector3.cppm
+#
+#        src/Base/Log/Log.ixx
+#
+#        src/Platform/Platform.ixx
+#        src/Platform/Window.cppm
+#        src/Platform/Event.cppm
+
+    PRIVATE
+#        $<$<PLATFORM_ID:Windows>:src/Platform/Windows/Window.cpp>
+#        $<$<PLATFORM_ID:Windows>:src/Platform/Windows/Event.cpp>
+)

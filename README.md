@@ -1,41 +1,44 @@
 # THE3DENGINE
 
-**THE3DENGINE** is a 3D game engine developed in C++ with a focus on modularity. It consists of 3 main components:
+![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)
+![CMake](https://img.shields.io/badge/CMake-3.30+-brightgreen.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- **Engine**: A dynamic library that contains the core game engine code, including rendering, physics, etc...
-- **Editor**: The graphical interface used for level editing and game development. (not implemented yet)
-- **Runtime**: The executable that runs the game using the engine.
+**THE3DENGINE** is a 3D game engine developed in (modern) c++ with a focus on modularity. It consists of 3 main components:
+
+- **Engine**: The core of the engine, responsible for rendering, physics, and other core functionalities.
+- **Editor**: A graphical user interface for creating and editing game scenes (not implemented yet).
+- **Client**: Runtime application for running games created with the engine.
 
 ## Prerequisites
 
-- **C++ Compiler**: Ensure you have a C++ compiler that supports C++17 or higher.
-- **CMake**: Version 3.10 or higher is required for building the project.
+- **C++ Compiler**: Standard **C++23** or higher is required.
+- **CMake**: Version **3.30** or higher is required.
 
-## Dependecies
+## Dependencies
 
-- **GLFW**: For window creation and input handling.
-- **GLAD**: For OpenGL loading.
-- **EnTT**: For entity-component-system.
-- **Lua**: For scripting.
+- **Qt6**: For the editor GUI (*not implemented yet*).
+- **GLAD**: For OpenGL loading (not implemented yet).
+- **Lua**: For scripting (not implemented yet).
 
 ## Building
 
 1. Clone the repository.
-2. Run the following commands in the root directory of the project:
+```bash
+git clone https://github.com/byosss/THE3DENGINE.git
+cd THE3DENGINE
+```
 
+2. Create a build directory.
 ```bash
 mkdir build
 cd build
-cmake ..
-make
 ```
 
-## Running
-
-After building the project, you can run the engine by executing the following command in the build directory:
-
+3. Compile the project using CMake
 ```bash
-./Runtime
+cmake ..
+cmake --build .
 ```
 
 ## License

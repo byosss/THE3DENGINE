@@ -1,16 +1,13 @@
 # Ignorer les fichiers temporaires
 *.tmp
 
-# Ignorer le dossier de vscode
+# Ignorer les dossiers de configuration des IDE
 .vscode/
-
-# Ignorer les fichiers de configuration locaux
-.env
+.idea/
 
 # Ignorer les fichiers de builds
 build/
-*.o
-*.exe
+cmake-build-debug/
 
 # Ignorer les fichiers de sauvegarde
 *~
