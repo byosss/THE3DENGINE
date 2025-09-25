@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 30, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "dev-debug",
+      "displayName": "Dev Debug (Ninja)",
+      "description": "Build de dev avec tests et exemples",
+      "generator": "Ninja",
+      "binaryDir": "Build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "THE3DENGINE_WARNINGS_AS_ERRORS": "OFF"
+      }
+    },
+    {
+      "name": "dev-release",
+      "displayName": "Dev Release (Ninja)",
+      "description": "Build optimisée pour profiling/perf",
+      "generator": "Ninja",
+      "binaryDir": "Build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ]
+}

@@ -6,8 +6,7 @@
 .idea/
 
 # Ignorer les fichiers de builds
-build/
-cmake-build-debug/
+Build/
 
 # Ignorer les fichiers de sauvegarde
 *~

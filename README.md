@@ -19,7 +19,6 @@
 
 - **Qt6**: For the editor GUI (*not implemented yet*).
 - **GLAD**: For OpenGL loading (not implemented yet).
-- **Lua**: For scripting (not implemented yet).
 
 ## Building
 
@@ -29,16 +28,10 @@ git clone https://github.com/byosss/THE3DENGINE.git
 cd THE3DENGINE
 ```
 
-2. Create a build directory.
+2. Configure & build.
 ```bash
-mkdir build
-cd build
-```
-
-3. Compile the project using CMake
-```bash
-cmake ..
-cmake --build .
+cmake --preset dev-debug
+cmake --build --preset dev-debug
 ```
 
 ## License
