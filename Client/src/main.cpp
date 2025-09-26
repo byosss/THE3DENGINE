@@ -1,14 +1,34 @@
-import engine.types;
+import engine.core.config;
+import engine.core.context;
+import engine.core.scheduler;
+import engine.core.loop;
 
 import std;
 
-int main() {
-    
-    engine::u32 a = 5;
-    engine::i32 b = -5;
-    engine::usize c = 10;
+using namespace engine;
 
-    std::println("test: a = {}, b = {}, c = {}", a, b, c);
+int main(int argc, char* argv[]) try
+{
+    // Config config = Config::from_file("config.toml");
+
+    // Context context (
+    //     std::make_unique<event::Bus>(config),
+    //     std::make_unique<time::Clock>(config),
+    //     std::make_unique<input::State>(config),
+    //     std::make_unique<asset::Store>(config),
+    //     std::make_unique<scene::Director>(config)
+    // );
+
+    // Scheduler scheduler;
+
+    // scheduler.enqueue<physics::World>(Phase::Fixed);
+    // scheduler.enqueue<graphics::Renderer>(Phase::Render);
+
+    // Loop loop(context, scheduler);
 
     return 0;
+
+} catch (const std::exception &e) {
+    std::cerr << "Unhandled exception: " << e.what() << std::endl;
+    return 1;
 }

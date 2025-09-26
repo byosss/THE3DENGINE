@@ -7,11 +7,11 @@ target_sources(Engine
     FILE_SET modules TYPE CXX_MODULES FILES
 
         src/Types.ixx
-#
-#        src/Core/Loop.ixx
-#        src/Core/Context.ixx
-#        src/Core/System.ixx
-#        src/Core/Scheduler.ixx
+
+        src/Core/Loop.ixx
+        src/Core/Config.ixx
+        src/Core/Context.ixx
+        src/Core/Scheduler.ixx
 #
 #        src/System/Graphics/Graphics.ixx
 #
@@ -25,7 +25,7 @@ target_sources(Engine
 #        src/Base/Math/Vector/Vector.cppm
 #        src/Base/Math/Vector/Vector3.cppm
 #
-#        src/Base/Log/Log.ixx
+#        src/Log/Log.ixx
 #
 #        src/Platform/Platform.ixx
 #        src/Platform/Window.cppm

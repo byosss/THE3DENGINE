@@ -11,7 +11,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "THE3DENGINE_WARNINGS_AS_ERRORS": "OFF"
+        "CMAKE_SUPPRESS_DEVELOPER_WARNINGS": "ON"
       }
     },
     {
@@ -22,7 +22,8 @@
       "binaryDir": "Build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_SUPPRESS_DEVELOPER_WARNINGS": "ON"
       }
     }
   ]
